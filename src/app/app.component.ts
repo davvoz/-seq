@@ -119,7 +119,7 @@ export class AppComponent implements AfterViewInit {
     }
   }
   drawSquare(s: Square) {
-    this.ctx.fillStyle = s.getColor();
+    this.ctx.fillStyle = "" ;
     this.ctx.strokeStyle = "rgb(0,0,0)";
     this.ctx.rect(s.getX(), s.getY(), s.getDimensioneLato(), s.getDimensioneLato());
     this.ctx.fill(),
