@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { TimerService } from './services/timer.service';
 import { SoundService } from './services/sound.service';
 import { RadioBtn, Adsr } from './interfaces/interfaces';
+import { Square } from './classes/square';
 @Component({
   selector: 'my-app',
   templateUrl: './app.component.html',
@@ -83,8 +84,10 @@ export class AppComponent implements AfterViewInit {
     this.cellwidth = this.w / 8;
     this.cellheight = this.h / 12;
     this.resizeCanvasToDisplaySize(this.canvas);
-    this.drawPianoGrid();
-    this.drawPlayHead(0);
+    //this.drawPianoGrid();
+    //this.drawPlayHead(0);
+    let sq = new Square();
+    this.drawSquare()
   }
 
   public start() {
@@ -109,7 +112,11 @@ export class AppComponent implements AfterViewInit {
       return '#119'
     }
   }
-
+  drawSquare(s: Square) {
+    this.ctx.rect(s.getX() , s.getY() , s.getDimensioneLato(), s.getDimensioneLato());
+    this.ctx.fill()
+    this.ctx.stroke();
+  }
   handleChange(event) {
     this.drawNote(this.getMousePos(event).x, this.getMousePos(event).y, 1);
 
