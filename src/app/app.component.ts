@@ -86,8 +86,7 @@ export class AppComponent implements AfterViewInit {
     this.resizeCanvasToDisplaySize(this.canvas);
     //this.drawPianoGrid();
     //this.drawPlayHead(0);
-    let sq = new Square();
-    this.drawSquare()
+    this.drawSquare(new Square(0,0,20));
   }
 
   public start() {
@@ -113,6 +112,7 @@ export class AppComponent implements AfterViewInit {
     }
   }
   drawSquare(s: Square) {
+    this.ctx.fillStyle = "rgb(128,128,128)";
     this.ctx.rect(s.getX() , s.getY() , s.getDimensioneLato(), s.getDimensioneLato());
     this.ctx.fill()
     this.ctx.stroke();
