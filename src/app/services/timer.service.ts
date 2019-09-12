@@ -4,7 +4,7 @@ import { TickResponse } from '../interfaces/interfaces';
 @Injectable()
 export class TimerService {
   numberOfTraks = 0;
-  maxStep = 15;
+  maxStep = 1280;
   startTime = 0;
   noteTime = 0;
   timeoutId;

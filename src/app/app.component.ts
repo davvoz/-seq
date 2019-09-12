@@ -66,18 +66,18 @@ export class AppComponent implements AfterViewInit {
         this.mySound.sustainVal = this.sustainVal;
         this.mySound.relase = this.relase;
         this.mySound.gain = this.gain;
-        const dim = 10;
-        this.drawSquare(new Square(dim, (res.timePosition + dim) , 10 + dim, '122,33,120'));
+        const dim = 17;
+        
         if (this.isPlayed) {
           this.drawPlayHead(res.timePosition);
-          if (this.radioButtons[res.timePosition].isPlay == true) {
-
+this.drawSquare(new Square(dim, (res.timePosition + dim) , 10 + dim, res.timePosition+','+(res.timePosition + dim)/3+',120'));
             // this.mySound.playOscillator(this.radioButtons[res.timePosition].freqSelected + this.frequency);
-          }
+          
 
         }
+        
       });
-
+this.drawPianoGrid() ;
   }
   ngAfterViewInit() {
     this.ctx = this.canvas.nativeElement.getContext("2d");
@@ -95,7 +95,7 @@ export class AppComponent implements AfterViewInit {
       }
 
     }
-    this.drawSquare(new Square(dim, 10 + dim, 10 + dim, '122,33,120'));
+    //this.drawSquare(new Square(dim, 10 + dim, 10 + dim, '122,33,120'));
 
   }
 
@@ -122,7 +122,7 @@ export class AppComponent implements AfterViewInit {
     }
   }
   drawSquare(s: Square) {
-    this.ctx.fillStyle = "";
+    this.ctx.fillStyle = "rgb(" + s.getColor() + ")";
     this.ctx.strokeStyle = "rgb(" + s.getColor() + ")";
     this.ctx.rect(s.getX(), s.getY(), s.getDimensioneLato(), s.getDimensioneLato());
     this.ctx.fill(),
