@@ -79,14 +79,21 @@ export class AppComponent implements AfterViewInit {
   }
   ngAfterViewInit() {
     this.ctx = this.canvas.nativeElement.getContext("2d");
-    this.w = this.canvas.nativeElement.scrollWidth;
-    this.h = this.canvas.nativeElement.scrollHeight;
-    this.cellwidth = this.w / 8;
-    this.cellheight = this.h / 12;
-    this.resizeCanvasToDisplaySize(this.canvas);
+    //this.w = this.canvas.nativeElement.scrollWidth;
+    //this.h = this.canvas.nativeElement.scrollHeight;
+    //this.cellwidth = this.w / 8;
+    //this.cellheight = this.h / 12;
+    // this.resizeCanvasToDisplaySize(this.canvas);
     //this.drawPianoGrid();
     //this.drawPlayHead(0);
-    this.drawSquare(new Square(0,0,20));
+    const dim = 20;
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        this.drawSquare(new Square(dim, 10 + dim * i, 10 + dim * j,"rgb(24,24,24)"));
+      }
+
+    }
+
   }
 
   public start() {
@@ -112,10 +119,11 @@ export class AppComponent implements AfterViewInit {
     }
   }
   drawSquare(s: Square) {
-    this.ctx.fillStyle = "rgb(128,128,128)";
-    this.ctx.rect(s.getX() , s.getY() , s.getDimensioneLato(), s.getDimensioneLato());
-    this.ctx.fill()
-    this.ctx.stroke();
+    this.ctx.fillStyle = s.getColor();
+    this.ctx.strokeStyle = "rgb(0,0,0)";
+    this.ctx.rect(s.getX(), s.getY(), s.getDimensioneLato(), s.getDimensioneLato());
+    this.ctx.fill(),
+      this.ctx.stroke();
   }
   handleChange(event) {
     this.drawNote(this.getMousePos(event).x, this.getMousePos(event).y, 1);
@@ -135,7 +143,6 @@ export class AppComponent implements AfterViewInit {
       y = parseInt((y + '').substr(0, 1), 10);
     }
 
-    console.log(y);
     this.ctx.fillStyle = "rgb(128,128,128)";
     if (selected) {
       this.ctx.strokeStyle = "rgb(255,255,255)";
