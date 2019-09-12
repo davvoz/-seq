@@ -27,4 +27,5 @@ export class Shape {
   public setY(val: number) {
     this.posY = val;
   }
+ 
 }

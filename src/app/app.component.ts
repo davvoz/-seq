@@ -66,11 +66,13 @@ export class AppComponent implements AfterViewInit {
         this.mySound.sustainVal = this.sustainVal;
         this.mySound.relase = this.relase;
         this.mySound.gain = this.gain;
+        const dim = 10;
+        this.drawSquare(new Square(dim, (res.timePosition + dim) , 10 + dim, '122,33,120'));
         if (this.isPlayed) {
           this.drawPlayHead(res.timePosition);
           if (this.radioButtons[res.timePosition].isPlay == true) {
 
-            this.mySound.playOscillator(this.radioButtons[res.timePosition].freqSelected + this.frequency);
+            // this.mySound.playOscillator(this.radioButtons[res.timePosition].freqSelected + this.frequency);
           }
 
         }
@@ -86,13 +88,14 @@ export class AppComponent implements AfterViewInit {
     // this.resizeCanvasToDisplaySize(this.canvas);
     //this.drawPianoGrid();
     //this.drawPlayHead(0);
-    const dim = 20;
+    const dim = 10;
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
-        this.drawSquare(new Square(dim, 10 + dim * i, 10 + dim * j));
+
       }
 
     }
+    this.drawSquare(new Square(dim, 10 + dim, 10 + dim, '122,33,120'));
 
   }
 
@@ -119,8 +122,8 @@ export class AppComponent implements AfterViewInit {
     }
   }
   drawSquare(s: Square) {
-    this.ctx.fillStyle = "" ;
-    this.ctx.strokeStyle = "rgb(0,0,0)";
+    this.ctx.fillStyle = "";
+    this.ctx.strokeStyle = "rgb(" + s.getColor() + ")";
     this.ctx.rect(s.getX(), s.getY(), s.getDimensioneLato(), s.getDimensioneLato());
     this.ctx.fill(),
       this.ctx.stroke();
