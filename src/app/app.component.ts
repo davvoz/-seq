@@ -89,7 +89,7 @@ export class AppComponent implements AfterViewInit {
     const dim = 20;
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
-        this.drawSquare(new Square(dim, 10 + dim * i, 10 + dim * j,"rgb(24,24,24)"));
+        this.drawSquare(new Square(dim, 10 + dim * i, 10 + dim * j));
       }
 
     }
