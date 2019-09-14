@@ -20,7 +20,7 @@ export class AppComponent implements AfterViewInit {
     this.single(event.key);
   }
 
-
+  precedent: Square;
 
   radioButtons: Array<RadioBtn> = [];
   isPlayed = false;
@@ -44,8 +44,7 @@ export class AppComponent implements AfterViewInit {
 
 
   constructor(public myTimer: TimerService, public mySound: SoundService) {
-
-
+    this.precedent = new Square(17, 0, 0, "0,0,0");
 
     for (let i = 0; i < this.arrBeats.length; i++) {
       this.matrix.push([]);
@@ -67,17 +66,17 @@ export class AppComponent implements AfterViewInit {
         this.mySound.relase = this.relase;
         this.mySound.gain = this.gain;
         const dim = 17;
-        
+
         if (this.isPlayed) {
           this.drawPlayHead(res.timePosition);
-this.drawSquare(new Square(dim, (res.timePosition + dim) , 10 + dim, res.timePosition+','+(res.timePosition + dim)/3+',120'));
-            // this.mySound.playOscillator(this.radioButtons[res.timePosition].freqSelected + this.frequency);
-          
+          this.drawSquare(new Square(dim, (res.timePosition + dim), 10 + dim, res.timePosition + ',' + (res.timePosition + dim) / 3 + ',120'));
+          // this.mySound.playOscillator(this.radioButtons[res.timePosition].freqSelected + this.frequency);
+
 
         }
-        
+
       });
-this.drawPianoGrid() ;
+    this.drawPianoGrid();
   }
   ngAfterViewInit() {
     this.ctx = this.canvas.nativeElement.getContext("2d");
@@ -122,11 +121,13 @@ this.drawPianoGrid() ;
     }
   }
   drawSquare(s: Square) {
+  
     this.ctx.fillStyle = "rgb(" + s.getColor() + ")";
     this.ctx.strokeStyle = "rgb(" + s.getColor() + ")";
     this.ctx.rect(s.getX(), s.getY(), s.getDimensioneLato(), s.getDimensioneLato());
-    this.ctx.fill(),
+    this.ctx.fill();
       this.ctx.stroke();
+    this.precedent = s;
   }
   handleChange(event) {
     this.drawNote(this.getMousePos(event).x, this.getMousePos(event).y, 1);

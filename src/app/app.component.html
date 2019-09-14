@@ -1,7 +1,7 @@
 <button (click)="start()">start</button>
     <button (click)="stop()">stop</button>
-    <button (click)="pause()">pause</button><br>
-
+    <button (click)="pause()">pause</button><br><br>
+<input type="number" [(ngModel)]="this.myTimer.maxStep"/><br><br>
   speed <app-speed-control></app-speed-control><br>
 
 gain<input [(ngModel)]="gain" type="range" min="0"  max="1" step="0.01"/><br>
