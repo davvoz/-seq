@@ -64,17 +64,18 @@ export class AppComponent implements AfterViewInit {
     this.ngZone.runOutsideAngular(() => this.tick());
     setInterval(() => {
       this.tick();
-    }, 100);
-    const dim = 10;
+    }, 200);
 
 
   }
   tick() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.squares.forEach((square: Square) => {
+      square.moveDown();
       square.moveRight();
     });
     this.requestId = requestAnimationFrame(() => this.tick);
+    this.count++;
   }
   public start() {
     const square = new Square(10, 0, 0, '0,0,0', this.ctx);
@@ -82,6 +83,7 @@ export class AppComponent implements AfterViewInit {
 
   }
   public stop() {
+    //cancelAnimationFrame(this.requestId);
     this.isPlayed = false;
     this.myTimer.stop()
   }
