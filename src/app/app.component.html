@@ -2,6 +2,8 @@
     <button (click)="stop()">stop</button>
     <button (click)="pause()">pause</button><br><br>
 
-<canvas #canvas width="300" height="300" (click)="handleChange($event)"></canvas>
-{{count}}
-
+<canvas #canvas width="300" height="300" (click)="handleChange($event)" style="border:1px solid black"></canvas>
+{{key}}<br>
+x = {{coord.x}} <br>
+y = {{coord.y}} <br> {{3 * this.lato -1 }}<br>
+<input type="number" [(ngModel)]="lato" min="0" max="50"/>

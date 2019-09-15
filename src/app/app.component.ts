@@ -4,6 +4,8 @@ import { TimerService } from './services/timer.service';
 import { SoundService } from './services/sound.service';
 import { RadioBtn, Adsr } from './interfaces/interfaces';
 import { Square } from './classes/square';
+import { UserGui } from './classes/user-gui';
+import { Coordinates } from './interfaces/interfaces';
 @Component({
   selector: 'my-app',
   templateUrl: './app.component.html',
@@ -14,7 +16,7 @@ import { Square } from './classes/square';
 })
 export class AppComponent implements AfterViewInit {
 
-public key;
+  public key;
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     console.log(event.key);
@@ -22,7 +24,7 @@ public key;
   }
 
   precedent: Square;
-  up ; down; right; left;
+
   radioButtons: Array<RadioBtn> = [];
   isPlayed = false;
   subscription: Subscription;
@@ -30,7 +32,7 @@ public key;
   requestId;
   gain = 0;
   width = 300;
-  
+  lato = 10;
   public attack = 0;
   public decay = 0;
   public sustain = 0;
@@ -43,14 +45,15 @@ public key;
   arrBeats = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
   frequencies = [110.00, 116.54, 123.47, 130.81, 138.59, 146.83, 155.56, 164.81, 174.61, 185.00, 196.00, 207.65];
   w; h; cellwidth; cellheight;
+  coord: Coordinates = { x: 0, y: 0 };
   @ViewChild('canvas', { static: false }) canvas: ElementRef<HTMLCanvasElement>;
   private ctx: CanvasRenderingContext2D;
-
+  userGui: UserGui;
 
 
   constructor(public myTimer: TimerService, public mySound: SoundService, private ngZone: NgZone) {
-
-
+    this.coord.x = 0;
+    this.coord.y = 0;
     this.subscription = this.myTimer.trackStateItem$
       .subscribe(res => {
 
@@ -71,25 +74,36 @@ public key;
 
   }
   tick() {
-    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+   // this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    //this.userGui = new UserGui(this.ctx, 'ciao');
+    //this.userGui.draw();
     this.squares.forEach((square: Square) => {
-      switch(this.key){
-        case 'w' :square.moveUp();
-        break;
-        case 'a' :square.moveLeft();
-        break;
-        case 's' : square.moveDown();
-        break;
-        case 'd' :square.moveRight();
-        break;
+      this.coord = { x: square.getX(), y: square.getY() };
+      square.setColor(this.randomColorString());
+      switch (this.key) {
+        case 'w':
+          if (square.getY() > 0) { square.moveUp(); } else { square.standUp() }
+          break;
+        case 'a':
+          if (square.getX() > 0) { square.moveLeft(); } else { square.standUp() };
+          break;
+        case 's':
+          if (square.getY() < 3 * this.lato - 1) { square.moveDown();; } else { square.standUp() }
+          break;
+        case 'd':
+          if (square.getX() < 3 * this.lato - 1) { square.moveRight(); } else { square.standUp() };
+          break;
+        default: square.standUp();
+          break;
       }
-     
+
     });
     this.requestId = requestAnimationFrame(() => { this.tick; this.count++; });
     // 
   }
   public start() {
-    const square = new Square(10, 0, 0, '0,0,0', this.ctx);
+    this.squares.pop();
+    const square = new Square(this.lato, 0, 0, '100,100,20', this.ctx);
     this.squares = this.squares.concat(square);
 
   }
@@ -111,7 +125,7 @@ public key;
     }
   }
   play(): void {
-    const squareModel = new Square(1, 0, 0, "10,100,10", this.ctx);;
+    const squareModel = new Square(10, 0, 0, "10,100,20", this.ctx);;
     this.squares = this.squares.concat(squareModel);
   }
   handleChange(event) {
@@ -124,6 +138,12 @@ public key;
       x: evt.clientX - rect.left,
       y: evt.clientY - rect.top
     };
+  }
+  private randomColorString() {
+    return this.getRandomInt() + ',' + this.getRandomInt() + ',' + this.getRandomInt();
+  }
+  private getRandomInt() {
+    return Math.floor(Math.random() * (255 - 0)) + 0; //Il max è escluso e il min è incluso
   }
 
 }

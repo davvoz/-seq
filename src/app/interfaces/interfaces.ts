@@ -46,7 +46,7 @@ export interface TickResponse {
   audioContextTime: number;
 }
 
-export interface Position{
+export interface Coordinates{
   x:number;
   y:number;
 }
