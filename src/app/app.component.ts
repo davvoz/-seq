@@ -47,6 +47,8 @@ export class AppComponent implements AfterViewInit {
   w; h; cellwidth; cellheight;
   coord: Coordinates = { x: 0, y: 0 };
   @ViewChild('canvas', { static: false }) canvas: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvas', { static: false }) canvasGui: ElementRef<HTMLCanvasElement>;
+  private ctxGui: CanvasRenderingContext2D;
   private ctx: CanvasRenderingContext2D;
   userGui: UserGui;
 
@@ -64,7 +66,7 @@ export class AppComponent implements AfterViewInit {
       });
   }
   ngAfterViewInit() {
-
+    this.ctxGui = this.canvasGui.nativeElement.getContext("2d");
     this.ctx = this.canvas.nativeElement.getContext("2d");
     this.ngZone.runOutsideAngular(() => this.tick());
     setInterval(() => {
@@ -74,12 +76,14 @@ export class AppComponent implements AfterViewInit {
 
   }
   tick() {
-   // this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-    //this.userGui = new UserGui(this.ctx, 'ciao');
-    //this.userGui.draw();
+    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+  
+
     this.squares.forEach((square: Square) => {
       this.coord = { x: square.getX(), y: square.getY() };
-      square.setColor(this.randomColorString());
+      this.userGui = new UserGui(this.ctxGui, this.coord);
+     // this.userGui.draw();
+
       switch (this.key) {
         case 'w':
           if (square.getY() > 0) { square.moveUp(); } else { square.standUp() }
@@ -125,7 +129,7 @@ export class AppComponent implements AfterViewInit {
     }
   }
   play(): void {
-    const squareModel = new Square(10, 0, 0, "10,100,20", this.ctx);;
+    const squareModel = new Square(10, 0, 0, this.randomColorString(), this.ctx);;
     this.squares = this.squares.concat(squareModel);
   }
   handleChange(event) {
