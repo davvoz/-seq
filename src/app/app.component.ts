@@ -14,14 +14,15 @@ import { Square } from './classes/square';
 })
 export class AppComponent implements AfterViewInit {
 
-
+public key;
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-   
+    console.log(event.key);
+    this.key = event.key;
   }
 
   precedent: Square;
-
+  up ; down; right; left;
   radioButtons: Array<RadioBtn> = [];
   isPlayed = false;
   subscription: Subscription;
@@ -29,12 +30,13 @@ export class AppComponent implements AfterViewInit {
   requestId;
   gain = 0;
   width = 300;
+  
   public attack = 0;
   public decay = 0;
   public sustain = 0;
   public relase = 0;
   public sustainVal = 0;
-   count =0;
+  count = 0;
   matrix = [[]];
   fre = [];
   squares: Square[] = [];
@@ -43,7 +45,7 @@ export class AppComponent implements AfterViewInit {
   w; h; cellwidth; cellheight;
   @ViewChild('canvas', { static: false }) canvas: ElementRef<HTMLCanvasElement>;
   private ctx: CanvasRenderingContext2D;
- 
+
 
 
   constructor(public myTimer: TimerService, public mySound: SoundService, private ngZone: NgZone) {
@@ -59,7 +61,7 @@ export class AppComponent implements AfterViewInit {
       });
   }
   ngAfterViewInit() {
-    
+
     this.ctx = this.canvas.nativeElement.getContext("2d");
     this.ngZone.runOutsideAngular(() => this.tick());
     setInterval(() => {
@@ -71,11 +73,20 @@ export class AppComponent implements AfterViewInit {
   tick() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.squares.forEach((square: Square) => {
-      square.moveDown();
-      square.moveRight();
+      switch(this.key){
+        case 'w' :square.moveUp();
+        break;
+        case 'a' :square.moveLeft();
+        break;
+        case 's' : square.moveDown();
+        break;
+        case 'd' :square.moveRight();
+        break;
+      }
+     
     });
-    this.requestId = requestAnimationFrame(() => this.tick);
-    this.count++;
+    this.requestId = requestAnimationFrame(() => { this.tick; this.count++; });
+    // 
   }
   public start() {
     const square = new Square(10, 0, 0, '0,0,0', this.ctx);
@@ -100,7 +111,7 @@ export class AppComponent implements AfterViewInit {
     }
   }
   play(): void {
-    const  squareModel = new Square(1, 0, 0, "0,0,0", this.ctx);;
+    const squareModel = new Square(1, 0, 0, "10,100,10", this.ctx);;
     this.squares = this.squares.concat(squareModel);
   }
   handleChange(event) {

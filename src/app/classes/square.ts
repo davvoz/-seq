@@ -12,6 +12,7 @@ export class Square extends Shape {
     this.dimensioneLato = dim;
   }
   draw(){
+    this.ctx.stroke()
      this.ctx.fillRect(this.getDimensioneLato() * this.getX(), this.getDimensioneLato() * this.getY(), this.getDimensioneLato(), this.getDimensioneLato());
   }
 }

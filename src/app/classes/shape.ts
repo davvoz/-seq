@@ -31,8 +31,16 @@ export abstract class Shape implements Drowable {
     this.posX++;
     this.draw();
   }
+  moveLeft() {
+    this.posX--;
+    this.draw();
+  }
   moveDown() {
     this.posY++;
+    this.draw();
+  }
+  moveUp() {
+    this.posY--;
     this.draw();
   }
 draw(){}
