@@ -27,3 +27,14 @@ border:2px solid red;
   float: left;
 
 }
+ .stage {
+    width: 480px;
+    height: 320px;
+    position: relative;
+    border: 2px solid black;
+  }
+
+  canvas { position: absolute; }
+  .ui-layer { z-index: 3; border: 2px solid green}
+  .game-layer { z-index: 2; border: 2px solid red}
+  .background-layer { z-index: 1; }

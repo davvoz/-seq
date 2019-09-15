@@ -1,6 +1,13 @@
-<canvas #canvasGui    width="300" height="300" (click)="handleChange($event)" style="border : 1px dotted green;position: absolute; left: 0; top: 0; z-index: 0;">
 
-<canvas #canvas    width="300" height="300" (click)="handleChange($event)" style="border : 1px solid red;position: absolute; left: 0; top: 0; z-index: 0;"></canvas><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<div class="stage">
+<canvas #canvasGui    width="380" height="300" (click)="handleChange($event)" class="ui-layer" ></canvas>
+
+<canvas #canvas    width="300" height="300" (click)="handleChange($event)" class="game-layer" ></canvas>
+
+<canvas #background    width="300" height="300" (click)="handleChange($event)" class="background-layer" ></canvas>
+
+
+</div>
 <button (click)="start()">start</button>
 
 

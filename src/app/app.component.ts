@@ -77,12 +77,13 @@ export class AppComponent implements AfterViewInit {
   }
   tick() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-  
 
+    this.userGui = new UserGui(this.ctxGui, { x: this.coord.x, y: this.coord.y });
+    this.userGui.draw();
     this.squares.forEach((square: Square) => {
       this.coord = { x: square.getX(), y: square.getY() };
       this.userGui = new UserGui(this.ctxGui, this.coord);
-     // this.userGui.draw();
+      this.userGui.draw();
 
       switch (this.key) {
         case 'w':
