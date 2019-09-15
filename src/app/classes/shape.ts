@@ -1,9 +1,9 @@
-import { Position } from '../interfaces/interfaces';
-export class Shape {
+import { Position,Drowable } from '../interfaces/interfaces';
+export abstract class Shape implements Drowable {
   private posX: number;
   private posY: number;
   private color:String;
-  constructor(x:number,y:number,color:String) {
+  constructor(x:number,y:number,color:String,private ctx: CanvasRenderingContext2D) {
     this.posX=x;
     this.posY=y;
     this.color = color;
@@ -27,5 +27,9 @@ export class Shape {
   public setY(val: number) {
     this.posY = val;
   }
- 
+  moveRight() {
+    this.posX++;
+    this.draw();
+  }
+draw(){}
 }

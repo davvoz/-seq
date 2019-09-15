@@ -1,4 +1,4 @@
-import { Component, HostListener, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, HostListener, ElementRef, ViewChild, AfterViewInit ,NgZone} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TimerService } from './services/timer.service';
 import { SoundService } from './services/sound.service';
@@ -26,6 +26,7 @@ export class AppComponent implements AfterViewInit {
   isPlayed = false;
   subscription: Subscription;
   frequency = 0;
+  requestId;
   gain = 0;
   width = 300;
   public attack = 0;
@@ -35,6 +36,7 @@ export class AppComponent implements AfterViewInit {
   public sustainVal = 0;
   matrix = [[]];
   fre = [];
+  squares: Square[] = [];
   arrBeats = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
   frequencies = [110.00, 116.54, 123.47, 130.81, 138.59, 146.83, 155.56, 164.81, 174.61, 185.00, 196.00, 207.65];
   w; h; cellwidth; cellheight;
@@ -43,7 +45,7 @@ export class AppComponent implements AfterViewInit {
 
 
 
-  constructor(public myTimer: TimerService, public mySound: SoundService) {
+  constructor(public myTimer: TimerService, public mySound: SoundService,private ngZone: NgZone) {
     this.precedent = new Square(17, 0, 0, "0,0,0");
 
     for (let i = 0; i < this.arrBeats.length; i++) {
@@ -69,7 +71,7 @@ export class AppComponent implements AfterViewInit {
 
         if (this.isPlayed) {
           this.drawPlayHead(res.timePosition);
-          this.drawSquare(new Square(dim, (res.timePosition + dim), 10 + dim, res.timePosition + ',' + (res.timePosition + dim) / 3 + ',120'));
+          //this.drawSquare(new Square(dim, (res.timePosition + dim), 10 + dim, res.timePosition + ',' + (res.timePosition + dim) / 3 + ',120'));
           // this.mySound.playOscillator(this.radioButtons[res.timePosition].freqSelected + this.frequency);
 
 
@@ -80,13 +82,10 @@ export class AppComponent implements AfterViewInit {
   }
   ngAfterViewInit() {
     this.ctx = this.canvas.nativeElement.getContext("2d");
-    //this.w = this.canvas.nativeElement.scrollWidth;
-    //this.h = this.canvas.nativeElement.scrollHeight;
-    //this.cellwidth = this.w / 8;
-    //this.cellheight = this.h / 12;
-    // this.resizeCanvasToDisplaySize(this.canvas);
-    //this.drawPianoGrid();
-    //this.drawPlayHead(0);
+     this.ngZone.runOutsideAngular(() => this.tick());
+    setInterval(() => {
+      this.tick();
+    }, 200);
     const dim = 10;
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
@@ -97,7 +96,13 @@ export class AppComponent implements AfterViewInit {
     //this.drawSquare(new Square(dim, 10 + dim, 10 + dim, '122,33,120'));
 
   }
-
+tick() {
+    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    this.squares.forEach((square: Square) => {
+      square.moveRight();
+    });
+    this.requestId = requestAnimationFrame(() => this.tick);
+  }
   public start() {
     this.isPlayed = true;
     this.myTimer.play();
@@ -121,7 +126,7 @@ export class AppComponent implements AfterViewInit {
     }
   }
   drawSquare(s: Square) {
-  
+  this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctx.fillStyle = "rgb(" + s.getColor() + ")";
     this.ctx.strokeStyle = "rgb(" + s.getColor() + ")";
     this.ctx.rect(s.getX(), s.getY(), s.getDimensioneLato(), s.getDimensioneLato());
