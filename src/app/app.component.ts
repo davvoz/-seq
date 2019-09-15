@@ -32,7 +32,7 @@ export class AppComponent implements AfterViewInit {
   requestId;
   gain = 0;
   width = 300;
-  lato = 10;
+  lato = 20;
   public attack = 0;
   public decay = 0;
   public sustain = 0;
@@ -51,11 +51,12 @@ export class AppComponent implements AfterViewInit {
   private ctxGui: CanvasRenderingContext2D;
   private ctx: CanvasRenderingContext2D;
   userGui: UserGui;
-
-
+  block: Square = new Square(20, 10, 6, this.randomColorString(), this.ctx);
+  s
   constructor(public myTimer: TimerService, public mySound: SoundService, private ngZone: NgZone) {
     this.coord.x = 0;
     this.coord.y = 0;
+
     this.subscription = this.myTimer.trackStateItem$
       .subscribe(res => {
 
@@ -68,6 +69,7 @@ export class AppComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.ctxGui = this.canvasGui.nativeElement.getContext("2d");
     this.ctx = this.canvas.nativeElement.getContext("2d");
+
     this.ngZone.runOutsideAngular(() => this.tick());
     setInterval(() => {
       this.tick();
@@ -77,31 +79,35 @@ export class AppComponent implements AfterViewInit {
   }
   tick() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    this.block = new Square(20, 10, 6, this.randomColorString(), this.ctx);
 
-    this.userGui = new UserGui(this.ctxGui, { x: this.coord.x, y: this.coord.y });
-    this.userGui.draw();
+    this.block.setColor('200,10,160');
+    this.block.standUp();
     this.squares.forEach((square: Square) => {
       this.coord = { x: square.getX(), y: square.getY() };
       this.userGui = new UserGui(this.ctxGui, this.coord);
       this.userGui.draw();
-
-      switch (this.key) {
-        case 'w':
-          if (square.getY() > 0) { square.moveUp(); } else { square.standUp() }
-          break;
-        case 'a':
-          if (square.getX() > 0) { square.moveLeft(); } else { square.standUp() };
-          break;
-        case 's':
-          if (square.getY() < 3 * this.lato - 1) { square.moveDown();; } else { square.standUp() }
-          break;
-        case 'd':
-          if (square.getX() < 3 * this.lato - 1) { square.moveRight(); } else { square.standUp() };
-          break;
-        default: square.standUp();
-          break;
+      square.setColor(this.randomColorString());
+      if (!(square.getY() == 12 && square.getX() == 20)) {
+        switch (this.key) {
+          case 'w':
+            if (square.getY() > 0) { square.moveUp(); } else { square.standUp() }
+            break;
+          case 'a':
+            if (square.getX() > 0) { square.moveLeft(); } else { square.standUp() };
+            break;
+          case 's':
+            if (square.getY() < 14) { square.moveDown();; } else { square.standUp() }
+            break;
+          case 'd':
+            if (square.getX() < 14) { square.moveRight(); } else { square.standUp() };
+            break;
+          default: square.standUp();
+            break;
+        }
+      } else {
+        square.standUp();
       }
-
     });
     this.requestId = requestAnimationFrame(() => { this.tick; this.count++; });
     // 

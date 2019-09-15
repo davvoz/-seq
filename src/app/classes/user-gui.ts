@@ -9,9 +9,8 @@ export class UserGui {
     return this.par
   }
   public draw() {
-    this.ctx.beginPath();
-    //this.ctx.fillRect( 240, 240, 57, 57,);
-   //this.ctx.strokeStyle = "green";
+   
+   this.ctx.strokeStyle = "green";
     
     this.ctx.font = "20px IMPACT";
     this.ctx.fillText('X = ' + this.getText().x, 250, 290);

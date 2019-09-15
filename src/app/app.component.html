@@ -4,10 +4,11 @@
 
 <canvas #canvas    width="300" height="300" (click)="handleChange($event)" class="game-layer" ></canvas>
 
-<canvas #background    width="300" height="300" (click)="handleChange($event)" class="background-layer" ></canvas>
 
 
 </div>
-<button (click)="start()">start</button>
+<button (click)="start()">start</button><br>
+{{block.getY() + block.getDimensioneLato() }}<br>
+{{block.getX() + block.getDimensioneLato() }}
 
 
