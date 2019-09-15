@@ -1,4 +1,4 @@
-import { Component, HostListener, ElementRef, ViewChild, AfterViewInit ,NgZone} from '@angular/core';
+import { Component, HostListener, ElementRef, ViewChild, AfterViewInit, NgZone } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TimerService } from './services/timer.service';
 import { SoundService } from './services/sound.service';
@@ -17,7 +17,7 @@ export class AppComponent implements AfterViewInit {
 
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    this.single(event.key);
+   
   }
 
   precedent: Square;
@@ -34,6 +34,7 @@ export class AppComponent implements AfterViewInit {
   public sustain = 0;
   public relase = 0;
   public sustainVal = 0;
+   count =0;
   matrix = [[]];
   fre = [];
   squares: Square[] = [];
@@ -42,61 +43,33 @@ export class AppComponent implements AfterViewInit {
   w; h; cellwidth; cellheight;
   @ViewChild('canvas', { static: false }) canvas: ElementRef<HTMLCanvasElement>;
   private ctx: CanvasRenderingContext2D;
+ 
 
 
+  constructor(public myTimer: TimerService, public mySound: SoundService, private ngZone: NgZone) {
 
-  constructor(public myTimer: TimerService, public mySound: SoundService,private ngZone: NgZone) {
-    this.precedent = new Square(17, 0, 0, "0,0,0");
-
-    for (let i = 0; i < this.arrBeats.length; i++) {
-      this.matrix.push([]);
-      for (let j = 0; j < this.frequencies.length; j++) {
-        this.matrix[i].push(false)
-      }
-    }
-
-    for (let i = 0; i < this.arrBeats.length; i++) {
-      this.radioButtons.push({ name: 'beat' + i, freqSelected: 110.00, isPlay: false });
-    }
 
     this.subscription = this.myTimer.trackStateItem$
       .subscribe(res => {
-        this.mySound.attack = this.attack;
-        this.mySound.decay = this.decay;
-        this.mySound.sustain = this.sustain;
-        this.mySound.sustainVal = this.sustainVal;
-        this.mySound.relase = this.relase;
-        this.mySound.gain = this.gain;
-        const dim = 17;
+
 
         if (this.isPlayed) {
-          this.drawPlayHead(res.timePosition);
-          //this.drawSquare(new Square(dim, (res.timePosition + dim), 10 + dim, res.timePosition + ',' + (res.timePosition + dim) / 3 + ',120'));
-          // this.mySound.playOscillator(this.radioButtons[res.timePosition].freqSelected + this.frequency);
-
-
         }
 
       });
-    this.drawPianoGrid();
   }
   ngAfterViewInit() {
+    
     this.ctx = this.canvas.nativeElement.getContext("2d");
-     this.ngZone.runOutsideAngular(() => this.tick());
+    this.ngZone.runOutsideAngular(() => this.tick());
     setInterval(() => {
       this.tick();
-    }, 200);
+    }, 100);
     const dim = 10;
-    for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) {
 
-      }
-
-    }
-    //this.drawSquare(new Square(dim, 10 + dim, 10 + dim, '122,33,120'));
 
   }
-tick() {
+  tick() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.squares.forEach((square: Square) => {
       square.moveRight();
@@ -104,8 +77,9 @@ tick() {
     this.requestId = requestAnimationFrame(() => this.tick);
   }
   public start() {
-    this.isPlayed = true;
-    this.myTimer.play();
+    const square = new Square(10, 0, 0, '0,0,0', this.ctx);
+    this.squares = this.squares.concat(square);
+
   }
   public stop() {
     this.isPlayed = false;
@@ -115,9 +89,7 @@ tick() {
     this.isPlayed = false;
     this.myTimer.pause()
   }
-  public single(val) {
-    this.mySound.playOscillator(val * 15);
-  }
+
   getColor(number) {
     if (this.myTimer.steps + 1 == number) {
       return '#199'
@@ -125,101 +97,14 @@ tick() {
       return '#119'
     }
   }
-  drawSquare(s: Square) {
-  this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-    this.ctx.fillStyle = "rgb(" + s.getColor() + ")";
-    this.ctx.strokeStyle = "rgb(" + s.getColor() + ")";
-    this.ctx.rect(s.getX(), s.getY(), s.getDimensioneLato(), s.getDimensioneLato());
-    this.ctx.fill();
-      this.ctx.stroke();
-    this.precedent = s;
+  play(): void {
+    const  squareModel = new Square(1, 0, 0, "0,0,0", this.ctx);;
+    this.squares = this.squares.concat(squareModel);
   }
   handleChange(event) {
-    this.drawNote(this.getMousePos(event).x, this.getMousePos(event).y, 1);
 
   }
 
-  drawNote(x, y, length, selected = false) {
-
-    if (x < this.cellwidth) {
-      x = 0;
-    } else {
-      x = parseInt((x + '').substr(0, 1), 10);
-    }
-    if (y < this.cellheight) {
-      y = 0;
-    } else {
-      y = parseInt((y + '').substr(0, 1), 10);
-    }
-
-    this.ctx.fillStyle = "rgb(128,128,128)";
-    if (selected) {
-      this.ctx.strokeStyle = "rgb(255,255,255)";
-    } else {
-      this.ctx.strokeStyle = "rgb(24,24,24)";
-    }
-    this.ctx.rect(x * this.cellwidth, y * this.cellheight, this.cellwidth * length, this.cellheight);
-    this.ctx.fill()
-    this.ctx.stroke();
-  }
-
-  drawPlayHead(x) {
-    this.ctx.beginPath();
-    this.ctx.moveTo(x, 0);
-    this.ctx.lineWidth = 2;
-    this.ctx.strokeStyle = "red";
-    this.ctx.lineTo(x, this.h);
-    this.ctx.shadowBlur = 0;
-    this.ctx.stroke();
-  }
-
-
-  drawPianoGrid() {
-
-
-    for (let y = 0; y < this.w; y = y + this.cellheight) {
-      for (let x = 0; x < this.w; x = x + this.cellwidth) {
-        if (x % 8 == 0) {
-          this.ctx.beginPath();
-          this.ctx.moveTo(x, 0);
-          this.ctx.strokeStyle = "black";
-          this.ctx.lineTo(x, this.h);
-          this.ctx.shadowBlur = 0;
-          this.ctx.stroke();
-        }
-        this.ctx.beginPath();
-        if (y % 8) {
-          this.ctx.fillStyle = "rgb(32,32,32)";
-        } else {
-          this.ctx.fillStyle = "rgb(40,40,40)";
-        }
-        this.ctx.strokeStyle = "rgb(24,24,24)";
-        this.ctx.rect(x, y, this.cellwidth, this.cellheight);
-        this.ctx.fill()
-        this.ctx.stroke();
-      }
-    }
-  }
-  private dividi(x, y) {
-    let z = 0;
-    let i = x;
-    while (i >= y) {
-      i = i - y;
-      z++;
-    }
-    return z;
-  }
-  resizeCanvasToDisplaySize(canvas) {
-    let width = canvas.clientWidth;
-    let height = canvas.clientHeight;
-    if (canvas.width !== width || canvas.height !== height) {
-      canvas.width = width;
-      canvas.height = height;
-      return true;
-    }
-
-    return false;
-  }
   private getMousePos(evt) {
     let rect = this.canvas.nativeElement.getBoundingClientRect();
     return {
