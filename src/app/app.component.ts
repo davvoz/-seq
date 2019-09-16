@@ -52,7 +52,7 @@ export class AppComponent implements AfterViewInit {
   private ctx: CanvasRenderingContext2D;
   userGui: UserGui;
   block: Square = new Square(20, 10, 6, this.randomColorString(), this.ctx);
-  s
+  collisionsNumber = 0;
   constructor(public myTimer: TimerService, public mySound: SoundService, private ngZone: NgZone) {
     this.coord.x = 0;
     this.coord.y = 0;
@@ -79,35 +79,58 @@ export class AppComponent implements AfterViewInit {
   }
   tick() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-    this.block = new Square(20, 10, 6, this.randomColorString(), this.ctx);
+   // this.block = new Square(20, this.getRandomInt(14), this.getRandomInt(14), this.randomColorString(), this.ctx);
 
-    this.block.setColor('200,10,160');
+     this.block = new Square(20, 10, 10, '0,0,0', this.ctx);
+
+    //this.block.setColor('200,10,160');
     this.block.standUp();
     this.squares.forEach((square: Square) => {
       this.coord = { x: square.getX(), y: square.getY() };
-      this.userGui = new UserGui(this.ctxGui, this.coord);
+      this.userGui = new UserGui(this.ctxGui, this.coord,this.collisionsNumber);
       this.userGui.draw();
-      square.setColor(this.randomColorString());
-      if (!(square.getY() == 12 && square.getX() == 20)) {
-        switch (this.key) {
-          case 'w':
+      square.setColor('0,0,0');
+
+      switch (this.key) {
+        case 'w':
+          if (!this.collision(square, this.block)) {
             if (square.getY() > 0) { square.moveUp(); } else { square.standUp() }
-            break;
-          case 'a':
+          } else {
+            this.collisionsNumber++;
+            //square.standUp()
+          }
+          break;
+        case 'a':
+          if (!this.collision(square, this.block)) {
             if (square.getX() > 0) { square.moveLeft(); } else { square.standUp() };
-            break;
-          case 's':
+          } else {
+            // square.standUp()
+            this.collisionsNumber++;
+
+          }
+          break;
+        case 's':
+          if (!this.collision(square, this.block)) {
             if (square.getY() < 14) { square.moveDown();; } else { square.standUp() }
-            break;
-          case 'd':
+          } else {
+            this.collisionsNumber++;
+
+            //square.standUp()
+          }
+          break;
+        case 'd':
+          if (!this.collision(square, this.block)) {
             if (square.getX() < 14) { square.moveRight(); } else { square.standUp() };
-            break;
-          default: square.standUp();
-            break;
-        }
-      } else {
-        square.standUp();
+          } else {
+            this.collisionsNumber++;
+
+            //square.standUp()
+          }
+          break;
+        default: square.standUp();
+          break;
       }
+
     });
     this.requestId = requestAnimationFrame(() => { this.tick; this.count++; });
     // 
@@ -151,10 +174,22 @@ export class AppComponent implements AfterViewInit {
     };
   }
   private randomColorString() {
-    return this.getRandomInt() + ',' + this.getRandomInt() + ',' + this.getRandomInt();
+    return this.getRandomInt(255) + ',' + this.getRandomInt(255) + ',' + this.getRandomInt(255);
   }
-  private getRandomInt() {
-    return Math.floor(Math.random() * (255 - 0)) + 0; //Il max è escluso e il min è incluso
+  private getRandomInt(maxValue: number) {
+    return Math.floor(Math.random() * (maxValue - 0)) + 0; //Il max è escluso e il min è incluso
+  }
+  collision(player: Square, enemy: Square) {
+    var distX = Math.abs(player.getX() - enemy.getX() - enemy.getDimensioneLato());
+    var distY = Math.abs(player.getY() - enemy.getY() - enemy.getDimensioneLato());
+
+
+
+    var dx = distX - enemy.getDimensioneLato();
+    var dy = distY - enemy.getDimensioneLato();
+    console.log(dx);
+    console.log(dy);
+    return (dx == 0 && dy == 0);
   }
 
 }
