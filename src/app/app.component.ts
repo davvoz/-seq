@@ -79,15 +79,15 @@ export class AppComponent implements AfterViewInit {
   }
   tick() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-   // this.block = new Square(20, this.getRandomInt(14), this.getRandomInt(14), this.randomColorString(), this.ctx);
+    // this.block = new Square(20, this.getRandomInt(14), this.getRandomInt(14), this.randomColorString(), this.ctx);
 
-     this.block = new Square(20, 10, 10, '0,0,0', this.ctx);
+    this.block = new Square(20, 10, 10, '0,0,0', this.ctx);
 
     //this.block.setColor('200,10,160');
     this.block.standUp();
     this.squares.forEach((square: Square) => {
       this.coord = { x: square.getX(), y: square.getY() };
-      this.userGui = new UserGui(this.ctxGui, this.coord,this.collisionsNumber);
+      this.userGui = new UserGui(this.ctxGui, this.coord, this.collisionsNumber);
       this.userGui.draw();
       square.setColor('0,0,0');
 
@@ -98,6 +98,8 @@ export class AppComponent implements AfterViewInit {
           } else {
             this.collisionsNumber++;
             //square.standUp()
+            this.squares.pop();
+            this.squares.pop();
           }
           break;
         case 'a':
@@ -106,7 +108,7 @@ export class AppComponent implements AfterViewInit {
           } else {
             // square.standUp()
             this.collisionsNumber++;
-
+            this.squares.pop();
           }
           break;
         case 's':
@@ -114,7 +116,7 @@ export class AppComponent implements AfterViewInit {
             if (square.getY() < 14) { square.moveDown();; } else { square.standUp() }
           } else {
             this.collisionsNumber++;
-
+            this.squares.pop();
             //square.standUp()
           }
           break;
@@ -123,7 +125,7 @@ export class AppComponent implements AfterViewInit {
             if (square.getX() < 14) { square.moveRight(); } else { square.standUp() };
           } else {
             this.collisionsNumber++;
-
+            this.squares.pop();
             //square.standUp()
           }
           break;
@@ -132,6 +134,7 @@ export class AppComponent implements AfterViewInit {
       }
 
     });
+
     this.requestId = requestAnimationFrame(() => { this.tick; this.count++; });
     // 
   }
