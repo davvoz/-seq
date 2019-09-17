@@ -21,10 +21,10 @@ export class SoundService implements Adsr {
     //this.sustainVal = parseFloat(this.sustainVal + '');
     //this.relase = parseFloat(this.relase + '');
     this.attack = 0;
-    this.decay =0;
-    this.sustain =0;
-    this.sustainVal = 0;
-    this.relase = 0;
+    this.decay =0.6;
+    this.sustain =1;
+    this.sustainVal = 0.6;
+    this.relase = 0.4;
 
     this.frequency = freq;
     // create Oscillator node
