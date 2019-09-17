@@ -82,13 +82,13 @@ export class AppComponent implements AfterViewInit {
     // this.block = new Square(20, this.getRandomInt(14), this.getRandomInt(14), this.randomColorString(), this.ctx);
 
     this.block = new Square(20, 10, 10, '0,0,0', this.ctx);
-
+this.userGui = new UserGui(this.ctxGui, this.coord, this.collisionsNumber);
+      this.userGui.draw();
     //this.block.setColor('200,10,160');
     this.block.standUp();
     this.squares.forEach((square: Square) => {
       this.coord = { x: square.getX(), y: square.getY() };
-      this.userGui = new UserGui(this.ctxGui, this.coord, this.collisionsNumber);
-      this.userGui.draw();
+      
       square.setColor('0,0,0');
 
       switch (this.key) {
@@ -98,7 +98,6 @@ export class AppComponent implements AfterViewInit {
           } else {
             this.collisionsNumber++;
             //square.standUp()
-            this.squares.pop();
             this.squares.pop();
           }
           break;
