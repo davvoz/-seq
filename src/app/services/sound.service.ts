@@ -15,12 +15,16 @@ export class SoundService implements Adsr {
   constructor(public ts: TimerService) { }
 
   public playOscillator(freq) {
-    this.attack = parseFloat(this.attack + '');
-    this.decay = parseFloat(this.decay + '');
-    this.sustain = parseFloat(this.sustain + '');
-    this.sustainVal = parseFloat(this.sustainVal + '');
-    this.relase = parseFloat(this.relase + '');
-
+    //this.attack = parseFloat(this.attack + '');
+    //this.decay = parseFloat(this.decay + '');
+    //this.sustain = parseFloat(this.sustain + '');
+    //this.sustainVal = parseFloat(this.sustainVal + '');
+    //this.relase = parseFloat(this.relase + '');
+    this.attack = 0;
+    this.decay =0;
+    this.sustain =0;
+    this.sustainVal = 0;
+    this.relase = 0;
 
     this.frequency = freq;
     // create Oscillator node
@@ -30,7 +34,7 @@ export class SoundService implements Adsr {
     gainNode.gain.value = this.gain;
 
 
-    oscillator.frequency.setValueAtTime(freq -100, ct); // value in hertz
+    oscillator.frequency.setValueAtTime(freq - 100, ct); // value in hertz
     oscillator.connect(gainNode);
     oscillator.type = 'square';
     gainNode.connect(this.ts.audioContext.destination);

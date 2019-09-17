@@ -47,7 +47,7 @@ export class AppComponent implements AfterViewInit {
   w; h; cellwidth; cellheight;
   coord: Coordinates = { x: 0, y: 0 };
   @ViewChild('canvas', { static: false }) canvas: ElementRef<HTMLCanvasElement>;
-  @ViewChild('canvas', { static: false }) canvasGui: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvasGui', { static: false }) canvasGui: ElementRef<HTMLCanvasElement>;
   private ctxGui: CanvasRenderingContext2D;
   private ctx: CanvasRenderingContext2D;
   userGui: UserGui;
@@ -62,6 +62,7 @@ export class AppComponent implements AfterViewInit {
 
 
         if (this.isPlayed) {
+          
         }
 
       });
@@ -78,53 +79,61 @@ export class AppComponent implements AfterViewInit {
 
   }
   tick() {
+    
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-    // this.block = new Square(20, this.getRandomInt(14), this.getRandomInt(14), this.randomColorString(), this.ctx);
+    this.ctxGui.clearRect(0, 0, this.ctxGui.canvas.width, this.ctxGui.canvas.height);
 
-    this.block = new Square(20, 10, 10, '0,0,0', this.ctx);
-this.userGui = new UserGui(this.ctxGui, this.coord, this.collisionsNumber);
-      this.userGui.draw();
-    //this.block.setColor('200,10,160');
+
+    this.block = new Square(this.getRandomInt(210), this.getRandomInt(10), this.getRandomInt(10), '110,0,0', this.ctx);
+    switch (this.getRandomInt(3)) {
+      case 0: this.block.moveUp(); break;
+      case 1: this.block.moveLeft(); break;
+      case 2: this.block.moveDown(); break;
+      case 3: this.block.moveRight();; break;
+    }
+    this.userGui = new UserGui(this.ctxGui, this.coord, this.collisionsNumber);
+    this.userGui.draw();
+    this.block.setColor('100,10,160');
     this.block.standUp();
     this.squares.forEach((square: Square) => {
       this.coord = { x: square.getX(), y: square.getY() };
-      
-      square.setColor('0,0,0');
+
+      square.setColor(this.randomColorString());
 
       switch (this.key) {
         case 'w':
           if (!this.collision(square, this.block)) {
-            if (square.getY() > 0) { square.moveUp(); } else { square.standUp() }
+            if (square.getY() > 0) { square.moveUp(); } else { }
           } else {
             this.collisionsNumber++;
             //square.standUp()
-            this.squares.pop();
+            //this.squares.pop();
           }
           break;
         case 'a':
           if (!this.collision(square, this.block)) {
-            if (square.getX() > 0) { square.moveLeft(); } else { square.standUp() };
+            if (square.getX() > 0) { square.moveLeft(); } else { };
           } else {
             // square.standUp()
             this.collisionsNumber++;
-            this.squares.pop();
+            //this.squares.pop();
           }
           break;
         case 's':
           if (!this.collision(square, this.block)) {
-            if (square.getY() < 14) { square.moveDown();; } else { square.standUp() }
+            if (square.getY() < 14) { square.moveDown();; } else { }
           } else {
             this.collisionsNumber++;
-            this.squares.pop();
+          //  this.squares.pop();
             //square.standUp()
           }
           break;
         case 'd':
           if (!this.collision(square, this.block)) {
-            if (square.getX() < 14) { square.moveRight(); } else { square.standUp() };
+            if (square.getX() < 14) { square.moveRight(); } else { };
           } else {
             this.collisionsNumber++;
-            this.squares.pop();
+            //this.squares.pop();
             //square.standUp()
           }
           break;
@@ -134,7 +143,7 @@ this.userGui = new UserGui(this.ctxGui, this.coord, this.collisionsNumber);
 
     });
 
-    this.requestId = requestAnimationFrame(() => { this.tick; this.count++; });
+    this.requestId = requestAnimationFrame(() => { this.tick });
     // 
   }
   public start() {
