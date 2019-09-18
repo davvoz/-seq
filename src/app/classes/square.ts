@@ -2,7 +2,7 @@ import { Shape } from './shape';
 export class Square extends Shape {
   private dimensioneLato: number;
   private tune: number;
-  constructor(lato: number, x: number, y: number, color: String, private ctx: CanvasRenderingContext2D, tune: number) {
+  constructor(lato: number, x: number, y: number, color: String,  ctx: CanvasRenderingContext2D, tune: number) {
     super(x, y, color, ctx);
     this.dimensioneLato = lato;
     this.tune = tune;

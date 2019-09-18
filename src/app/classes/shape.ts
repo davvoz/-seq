@@ -3,7 +3,7 @@ export  class Shape implements Drowable {
   private posX: number;
   private posY: number;
   private color: String;
-  constructor(x: number, y: number, color: String, private ctx: CanvasRenderingContext2D) {
+  constructor(x: number, y: number, color: String,  ctx: CanvasRenderingContext2D) {
     this.posX = x;
     this.posY = y;
     this.color = color;

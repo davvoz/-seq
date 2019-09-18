@@ -60,10 +60,10 @@ export class AppComponent implements AfterViewInit {
   enemies: Square[] = [this.block, this.block2, this.block3, this.block4, this.block5];
 
   collisionsNumber = 0;
-  l1 = this.getRandomInt(14, 0);
-  l2 = this.getRandomInt(14, 0);
-  l3 = this.getRandomInt(14, 0);
-  l4 = this.getRandomInt(14, 0);
+  l1 = this.getRandomInt(16, 0);
+  l2 = this.getRandomInt(16, 0);
+  l3 = this.getRandomInt(16, 0);
+  l4 = this.getRandomInt(16, 0);
 
   constructor(public myTimer: TimerService, public mySound: SoundService, private ngZone: NgZone) {
     this.coord.x = 0;
@@ -86,7 +86,7 @@ export class AppComponent implements AfterViewInit {
     this.ngZone.runOutsideAngular(() => this.tick());
     setInterval(() => {
 
-      /this.tick();
+      this.tick();
     }, 150);
 
 
@@ -97,28 +97,78 @@ export class AppComponent implements AfterViewInit {
     this.ctxGui.clearRect(0, 0, this.ctxGui.canvas.width, this.ctxGui.canvas.height);
 
     this.enemies = [
-      new Square(this.lato, 10, 1, '110,0,0', this.ctx, 200),
-      new Square(this.lato, 10, 2, '0,110,0', this.ctx, 300),
-      new Square(this.lato, 10, 5, '0,0,110', this.ctx, 400),
-      new Square(this.lato, 10, 6, '110,70,0', this.ctx, 500),
-      new Square(this.lato, 10, 9, '110,0,70', this.ctx, 600),
-      new Square(this.lato, 10, 10, '70,70,110', this.ctx, 700),
-      new Square(this.lato, 10, 13, '110,0,0', this.ctx, 800),
-      new Square(this.lato, 10, 14, '110,0,0', this.ctx, 900),
-      new Square(this.lato, 1, 3, '110,0,0', this.ctx, 200),
-      new Square(this.lato, 2, 3, '0,110,0', this.ctx, 300),
-      new Square(this.lato, 5, 3, '0,0,110', this.ctx, 400),
-      new Square(this.lato, 6, 3, '110,70,0', this.ctx, 500),
-      new Square(this.lato, 9, 3, '110,0,70', this.ctx, 600),
-      new Square(this.lato, 10, 3, '70,70,110', this.ctx, 700),
-      new Square(this.lato, 13, 3, '110,0,0', this.ctx, 800),
-      new Square(this.lato, 14, 3, '110,0,0', this.ctx, 900)
+
     ];
-    for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 1; j++) {
-        this.enemies[i+j] = new Square(this.lato, i, j, '110,0,0', this.ctx, 900)
-      }
-    }
+    this.enemies = [
+      new Square(this.lato, 10, 1, '100,0,0', this.ctx, 58.27),
+      new Square(this.lato, 10, 3, '100,0,0', this.ctx, 61.74),
+      new Square(this.lato, 10, 5, '100,0,0', this.ctx, 65.41),
+      new Square(this.lato, 10, 7, '100,0,0', this.ctx, 69.30),
+      new Square(this.lato, 10, 9, '100,0,0', this.ctx, 116.54),
+      new Square(this.lato, 10, 11, '100,0,0', this.ctx, 77.78),
+      new Square(this.lato, 10, 13, '100,0,0', this.ctx, 82.41),
+      new Square(this.lato, 10, 15, '100,0,0', this.ctx, 87.31),
+      new Square(this.lato, 10, 16, '100,0,0', this.ctx, 311.13),
+      new Square(this.lato, 4, 1, '100,0,0', this.ctx, 58.27),
+      new Square(this.lato, 4, 3, '100,0,0', this.ctx, 61.74),
+      new Square(this.lato, 4, 4, '100,0,0', this.ctx, 155.56),
+      new Square(this.lato, 4, 7, '100,0,0', this.ctx, 69.30),
+      new Square(this.lato, 4, 9, '100,0,0', this.ctx, 116.54),
+      new Square(this.lato, 4, 11, '100,0,0', this.ctx, 155.56),
+      new Square(this.lato, 4, 13, '100,0,0', this.ctx, 523.25),
+      new Square(this.lato, 4, 14, '100,0,0', this.ctx, 185.00),
+      new Square(this.lato, 2, 16, '100,0,0', this.ctx,174.61),
+      new Square(this.lato, 2, 9, '100,0,0', this.ctx, 73.42),
+      new Square(this.lato, 2, 11, '100,0,0', this.ctx, 77.78),
+      new Square(this.lato, 2, 13, '100,0,0', this.ctx, 82.41),
+      new Square(this.lato, 2, 15, '100,0,0', this.ctx, 233.08),
+      new Square(this.lato, 2, 16, '100,0,0', this.ctx, 92.50),
+      new Square(this.lato, 2, 1, '100,0,0', this.ctx, 311.13),
+      new Square(this.lato, 2, 3, '100,0,0', this.ctx, 116.54),
+      new Square(this.lato, 2, 4, '100,0,0', this.ctx, 155.56),
+      new Square(this.lato, 2, 7, '100,0,0', this.ctx, 69.30),
+      new Square(this.lato, 2, 9, '100,0,0', this.ctx, 73.42),
+      new Square(this.lato, 15, 9, '100,0,0', this.ctx, 73.42),
+      new Square(this.lato, 15, 11, '100,0,0', this.ctx, 523.25),
+      new Square(this.lato, 15, 13, '100,0,0', this.ctx, 116.54),
+      new Square(this.lato, 15, 14, '100,0,0', this.ctx, 87.31),
+      new Square(this.lato, 15, 16, '100,0,0', this.ctx, 92.50),
+      new Square(this.lato, 15, 1, '100,0,0', this.ctx, 58.27),
+      new Square(this.lato, 15, 3, '100,0,0', this.ctx, 415.30),
+      new Square(this.lato, 15, 4, '100,0,0', this.ctx, 155.56),
+      new Square(this.lato, 15, 7, '100,0,0', this.ctx, 69.30),
+      new Square(this.lato, 15, 8, '100,0,0', this.ctx, 233.08),
+      new Square(this.lato, 10, 16, '100,0,0', this.ctx, 92.50),
+      new Square(this.lato, 7, 1, '100,0,0', this.ctx, 311.13),
+      new Square(this.lato, 7, 3, '100,0,0', this.ctx, 61.74),
+      new Square(this.lato, 7, 5, '100,0,0', this.ctx, 155.56),
+      new Square(this.lato, 7, 7, '100,0,0', this.ctx, 116.54),
+      new Square(this.lato, 7, 9, '100,0,0', this.ctx, 73.42),
+      new Square(this.lato, 7, 11, '100,0,0', this.ctx, 155.56),
+      new Square(this.lato, 7, 12, '100,0,0', this.ctx, 523.25),
+      new Square(this.lato, 7, 14, '100,0,0', this.ctx, 415.30),
+      new Square(this.lato, 7, 16, '100,0,0', this.ctx,174.61),
+      new Square(this.lato, 7, 9, '100,0,0', this.ctx, 73.42),
+      new Square(this.lato, 9, 1, '100,0,0', this.ctx, 415.30),
+      new Square(this.lato, 9, 3, '100,0,0', this.ctx, 233.08),
+      new Square(this.lato, 9, 4, '100,0,0', this.ctx, 155.56),
+      new Square(this.lato, 9, 5, '100,0,0', this.ctx, 69.30),
+      new Square(this.lato, 9, 7, '100,0,0', this.ctx, 116.54),
+      new Square(this.lato, 9, 9, '100,0,0', this.ctx, 155.56),
+      new Square(this.lato, 9, 10, '100,0,0', this.ctx, 311.13),
+      new Square(this.lato, 9, 11, '100,0,0', this.ctx, 185.00),
+      new Square(this.lato, 9, 13, '100,0,0', this.ctx,174.61),
+      new Square(this.lato, 9, 14, '100,0,0', this.ctx, 73.42),
+      new Square(this.lato, 1, 2, '100,0,0', this.ctx, 58.27),
+      new Square(this.lato, 1, 3, '100,0,0', this.ctx, 2415.30),
+      new Square(this.lato, 1, 5, '100,0,0', this.ctx, 155.56),
+      new Square(this.lato, 1, 7, '100,0,0', this.ctx, 69.30),
+      new Square(this.lato, 1, 8, '100,0,0', this.ctx, 73.42),
+      new Square(this.lato, 1, 10, '100,0,0', this.ctx, 311.13),
+      new Square(this.lato, 1, 11, '100,0,0', this.ctx, 415.30),
+      new Square(this.lato, 1, 12, '100,0,0', this.ctx,174.61),
+      new Square(this.lato, 1, 14, '100,0,0', this.ctx, 116.54),
+    ];
 
 
     this.userGui = new UserGui(this.ctxGui, this.coord, this.collisionsNumber);
@@ -138,7 +188,7 @@ export class AppComponent implements AfterViewInit {
             }
             else {
               if (square.getY() == 0) {
-                square.setY(14)
+                square.setY(15)
               } else {
                 square.standUp()
               }
@@ -155,7 +205,7 @@ export class AppComponent implements AfterViewInit {
               square.moveLeft();
             } else {
               if (square.getX() == 0) {
-                square.setX(14)
+                square.setX(15)
               } else { square.standUp() }
             };
           } else {
@@ -181,10 +231,10 @@ export class AppComponent implements AfterViewInit {
           break;
         case 'd':
           if (col.esito) {
-            if (square.getX() < 14) {
+            if (square.getX() < 15) {
               square.moveRight();
             } else {
-              if (square.getX() == 14) {
+              if (square.getX() == 15) {
                 square.setX(0)
               } else {
                 square.standUp()
@@ -233,8 +283,8 @@ export class AppComponent implements AfterViewInit {
   public start() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctxGui.clearRect(0, 0, this.ctxGui.canvas.width, this.ctxGui.canvas.height);
-    this.block = new Square(this.lato, this.getRandomInt(14, 0), this.getRandomInt(14, 0), '110,0,0', this.ctx, 100);
-    this.block2 = new Square(this.lato, this.getRandomInt(14, 0), this.getRandomInt(14, 0), '110,0,0', this.ctx, 200);
+    this.block = new Square(this.lato, this.getRandomInt(15, 0), this.getRandomInt(16, 0), '110,0,0', this.ctx, 100);
+    this.block2 = new Square(this.lato, this.getRandomInt(15, 0), this.getRandomInt(16, 0), '110,0,0', this.ctx, 200);
     this.squares.pop();
     const square = new Square(this.lato, 0, 0, '100,100,20', this.ctx, 100);
     this.squares = this.squares.concat(square);

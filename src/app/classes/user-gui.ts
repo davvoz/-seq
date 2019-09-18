@@ -1,14 +1,19 @@
 import { Coordinates } from '../interfaces/interfaces';
-
-export class UserGui {
+import { Shape } from './shape';
+export class UserGui extends Shape{
   par: Coordinates;
   collisions:number;
-  constructor(private ctx: CanvasRenderingContext2D, par: Coordinates, collisions:number) {
+  color:String;
+  constructor( x: number, y: number, ctx: CanvasRenderingContext2D, par: Coordinates, collisions:number,color:string) {
+    super(x, y, color, ctx);
     this.par = par;
     this.collisions = collisions;
+    this.color = color;
   }
   private getText() {
     return this.par
+  }
+  private setColor(){
   }
   private getCollision(){
     return this.collisions
@@ -18,16 +23,16 @@ export class UserGui {
   }
   public draw() {
    
-   this.ctx.strokeStyle = "green";
+   
     
-    this.ctx.font = "20px IMPACT";
-    this.ctx.fillText('X = ' + this.getText().x, 250, 300);
-    this.ctx.font = "20px IMPACT";
-    this.ctx.fillText('Y = ' + this.getText().y, 250, 270);
+    this.ctx.font = "15px IMPACT";
+    this.ctx.fillText('X = ' + this.getText().x, 230, 320);
+    this.ctx.font = "15px IMPACT";
+    this.ctx.fillText('Y = ' + this.getText().y, 290, 320);
 
-    this.ctx.font = "20px IMPACT";
-    this.ctx.fillText('Collision N° = ' + this.getCollision(), 0, 270);
+    this.ctx.font = "15px IMPACT";
+    this.ctx.fillText('Collision N° = ' + this.getCollision(), 0, 320);
      
-     
+    
   }
 }
