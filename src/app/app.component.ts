@@ -86,7 +86,7 @@ export class AppComponent implements AfterViewInit {
     this.ngZone.runOutsideAngular(() => this.tick());
     setInterval(() => {
 
-      this.tick();
+      /this.tick();
     }, 150);
 
 
@@ -114,7 +114,12 @@ export class AppComponent implements AfterViewInit {
       new Square(this.lato, 13, 3, '110,0,0', this.ctx, 800),
       new Square(this.lato, 14, 3, '110,0,0', this.ctx, 900)
     ];
-   
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 1; j++) {
+        this.enemies[i+j] = new Square(this.lato, i, j, '110,0,0', this.ctx, 900)
+      }
+    }
+
 
     this.userGui = new UserGui(this.ctxGui, this.coord, this.collisionsNumber);
     this.userGui.draw();
@@ -140,7 +145,7 @@ export class AppComponent implements AfterViewInit {
             }
           } else {
             this.collisionsNumber++;
-            this.manage('UP', square,col.indice);
+            this.manage('UP', square, col.indice);
 
           }
           break;
@@ -155,7 +160,7 @@ export class AppComponent implements AfterViewInit {
             };
           } else {
             this.collisionsNumber++;
-            this.manage('LEFT', square,col.indice);
+            this.manage('LEFT', square, col.indice);
           }
           break;
         case 's':
@@ -171,7 +176,7 @@ export class AppComponent implements AfterViewInit {
             }
           } else {
             this.collisionsNumber++;
-            this.manage('DOWN', square,col.indice);
+            this.manage('DOWN', square, col.indice);
           }
           break;
         case 'd':
@@ -187,7 +192,7 @@ export class AppComponent implements AfterViewInit {
             };
           } else {
             this.collisionsNumber++;
-            this.manage('RIGHT', square,col.indice);
+            this.manage('RIGHT', square, col.indice);
           }
           break;
         default: square.standUp();
