@@ -22,8 +22,8 @@ export class SoundService implements Adsr {
     //this.relase = parseFloat(this.relase + '');
     this.attack = 0;
     this.decay =0.1;
-    this.sustain =1;
-    this.sustainVal = 0.1;
+    this.sustain =0.3;
+    this.sustainVal = 0.01;
     this.relase = 0.2;
 
     this.frequency = freq;

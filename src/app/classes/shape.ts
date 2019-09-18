@@ -1,5 +1,5 @@
 import {  Drowable } from '../interfaces/interfaces';
-export abstract class Shape implements Drowable {
+export  class Shape implements Drowable {
   private posX: number;
   private posY: number;
   private color: String;

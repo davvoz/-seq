@@ -1,15 +1,23 @@
 import { Shape } from './shape';
 export class Square extends Shape {
   private dimensioneLato: number;
-  constructor(lato: number, x: number, y: number, color: String, private ctx: CanvasRenderingContext2D) {
+  private tune: number;
+  constructor(lato: number, x: number, y: number, color: String, private ctx: CanvasRenderingContext2D, tune: number) {
     super(x, y, color, ctx);
     this.dimensioneLato = lato;
+    this.tune = tune;
   }
   public getDimensioneLato(): number {
     return this.dimensioneLato
   }
   public setDimensioneLato(dim: number) {
     this.dimensioneLato = dim;
+  }
+  public setTune(tune: number) {
+    this.tune = tune;
+  }
+  public getTune(): number {
+    return this.tune
   }
   draw() {
     this.ctx.fillStyle = 'rgb(' + this.getColor() + ')';
