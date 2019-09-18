@@ -83,7 +83,7 @@ export class AppComponent implements AfterViewInit {
     setInterval(() => {
 
       this.tick();
-    }, 200);
+    }, 100);
 
 
   }
@@ -92,10 +92,10 @@ export class AppComponent implements AfterViewInit {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctxGui.clearRect(0, 0, this.ctxGui.canvas.width, this.ctxGui.canvas.height);
 
-    this.block = new Square(this.lato, this.l3, this.l4, '110,0,0', this.ctx);
-    this.block2 = new Square(this.lato, this.l1, this.l2, '110,0,0', this.ctx);
-    this.block3 = new Square(this.lato, 3, 5, '110,0,0', this.ctx);
-    this.block4 = new Square(this.lato, 13, 7, '110,0,0', this.ctx);
+    this.block = new Square(this.lato, 10, 10, '110,0,0', this.ctx);
+    this.block2 = new Square(this.lato, 10, 3, '110,0,0', this.ctx);
+    this.block3 = new Square(this.lato, 10, 5, '110,0,0', this.ctx);
+    this.block4 = new Square(this.lato, 10, 7, '110,0,0', this.ctx);
 
     //switch (this.getRandomInt(3)) {
     //case 0: this.block.moveUp(); break;
@@ -119,10 +119,10 @@ export class AppComponent implements AfterViewInit {
       switch (this.key) {
         case 'w':
           if (!this.collision(square, this.block) && !this.collision(square, this.block2) && !this.collision(square, this.block3)&& !this.collision(square, this.block4)) {
-            if (square.getY() > 0) { square.moveUp(); } else { square.standUp() }
+            if (square.getY() > 0) { square.moveUp(); } else {if(square.getY()==14){ square.setY(0)}else {square.standUp() }}
           } else {
             this.collisionsNumber++;
-            this.mySound.playOscillator(this.getRandomInt(330));
+            this.mySound.playOscillator(this.getRandomInt(1330));
             square.moveUp();
             //square.standUp()
             //this.squares.pop();
@@ -133,7 +133,7 @@ export class AppComponent implements AfterViewInit {
             if (square.getX() > 0) { square.moveLeft(); } else { square.standUp() };
           } else {
             //square.standUp()
-            this.mySound.playOscillator(this.getRandomInt(330));
+            this.mySound.playOscillator(this.getRandomInt(1330));
             this.collisionsNumber++;
             square.moveLeft();
             //this.squares.pop();
@@ -141,11 +141,11 @@ export class AppComponent implements AfterViewInit {
           break;
         case 's':
           if (!this.collision(square, this.block) && !this.collision(square, this.block2) && !this.collision(square, this.block3)&& !this.collision(square, this.block4)) {
-            if (square.getY() < 14) { square.moveDown();; } else { square.standUp() }
+            if (square.getY() < 14) { square.moveDown() } else {if(square.getY()==14){ square.setY(0)}else {square.standUp() }}
           } else {
             this.collisionsNumber++;
             //this.squares.pop();
-            this.mySound.playOscillator(this.getRandomInt(330));
+            this.mySound.playOscillator(this.getRandomInt(1330));
             // square.standUp()
             square.moveDown();
           }
@@ -157,7 +157,7 @@ export class AppComponent implements AfterViewInit {
             this.collisionsNumber++;
             // this.squares.pop();
             square.moveRight();
-            this.mySound.playOscillator(this.getRandomInt(330));
+            this.mySound.playOscillator(this.getRandomInt(1330));
             //square.standUp()
           }
           break;
