@@ -5,6 +5,7 @@ import { SoundService } from './services/sound.service';
 import { RadioBtn, Adsr } from './interfaces/interfaces';
 import { Square } from './classes/square';
 import { UserGui } from './classes/user-gui';
+import { Cursor } from './classes/cursor';
 import { Coordinates, Collision } from './interfaces/interfaces';
 @Component({
   selector: 'my-app',
@@ -41,7 +42,7 @@ export class AppComponent implements AfterViewInit {
   count = 0;
   matrix = [[]];
   fre = [];
-  squares: Square[] = [];
+  squares: Cursor[] = [];
   arrBeats = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
   frequencies = [110.00, 116.54, 123.47, 130.81, 138.59, 146.83, 155.56, 164.81, 174.61, 185.00, 196.00, 207.65];
   w; h; cellwidth; cellheight;
@@ -176,7 +177,7 @@ export class AppComponent implements AfterViewInit {
     this.userGui.draw();
     this.standUpEnemies();
 
-    this.squares.forEach((square: Square) => {
+    this.squares.forEach((square: Cursor) => {
       this.coord = { x: square.getX(), y: square.getY() };
       square.setColor('0,0,0');
       const col: Collision = this.collisionsArrayControl(square);
@@ -289,7 +290,7 @@ export class AppComponent implements AfterViewInit {
     this.block = new Square(this.lato, this.getRandomInt(15, 0), this.getRandomInt(15, 0), '110,0,0', this.ctx, 100);
     this.block2 = new Square(this.lato, this.getRandomInt(15, 0), this.getRandomInt(15, 0), '110,0,0', this.ctx, 200);
     //this.squares.pop();
-    const square = new Square(this.lato, 0, 0, '100,100,20', this.ctx, 100);
+    const square = new Cursor(this.lato, 0, 0, '100,100,20', this.ctx, 100);
     this.squares = this.squares.concat(square);
 
   }
