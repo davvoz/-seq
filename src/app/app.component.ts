@@ -171,7 +171,7 @@ export class AppComponent implements AfterViewInit {
     ];
 
 
-    this.userGui = new UserGui(this.ctxGui, this.coord, this.collisionsNumber);
+    this.userGui = new UserGui(0,0,this.ctxGui, this.coord, this.collisionsNumber,'0,0,0');
     this.userGui.draw();
     this.standUpEnemies();
 
