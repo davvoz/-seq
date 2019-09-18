@@ -54,3 +54,7 @@ export interface Coordinates{
 export interface Drowable{
    draw():void;
 }
+export interface Collision{
+  esito:boolean;
+  indice:number;
+}

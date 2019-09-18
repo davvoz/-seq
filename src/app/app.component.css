@@ -21,7 +21,7 @@ border:2px solid red;
     height: 100px;
 }
 .col{
-  height: 500px;
+  height: 400px;
   width: 40px;
   background: pink;
   float: left;
@@ -29,12 +29,14 @@ border:2px solid red;
 }
  .stage {
     width: 480px;
-    height: 320px;
+    height: 400px;
     position: relative;
     border: 2px solid black;
+    align-items: center;
+    align-content: center;
   }
 
   canvas { position: absolute; }
-  .ui-layer { z-index: 3; border: 2px solid green}
+  .ui-layer { z-index: 3;}
   .game-layer { z-index: 2; border: 2px solid red}
   .background-layer { z-index: 1; }

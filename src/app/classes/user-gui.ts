@@ -21,7 +21,7 @@ export class UserGui {
    this.ctx.strokeStyle = "green";
     
     this.ctx.font = "20px IMPACT";
-    this.ctx.fillText('X = ' + this.getText().x, 250, 290);
+    this.ctx.fillText('X = ' + this.getText().x, 250, 300);
     this.ctx.font = "20px IMPACT";
     this.ctx.fillText('Y = ' + this.getText().y, 250, 270);
 

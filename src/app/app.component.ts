@@ -5,7 +5,7 @@ import { SoundService } from './services/sound.service';
 import { RadioBtn, Adsr } from './interfaces/interfaces';
 import { Square } from './classes/square';
 import { UserGui } from './classes/user-gui';
-import { Coordinates } from './interfaces/interfaces';
+import { Coordinates, Collision } from './interfaces/interfaces';
 @Component({
   selector: 'my-app',
   templateUrl: './app.component.html',
@@ -56,6 +56,9 @@ export class AppComponent implements AfterViewInit {
   block3: Square = new Square(20, 6, 6, this.randomColorString(), this.ctx, 100);
   block4: Square = new Square(20, 6, 6, this.randomColorString(), this.ctx, 100);
   block5: Square = new Square(20, 6, 6, this.randomColorString(), this.ctx, 100);
+
+  enemies: Square[] = [this.block, this.block2, this.block3, this.block4, this.block5];
+
   collisionsNumber = 0;
   l1 = this.getRandomInt(14, 0);
   l2 = this.getRandomInt(14, 0);
@@ -84,7 +87,7 @@ export class AppComponent implements AfterViewInit {
     setInterval(() => {
 
       this.tick();
-    }, 50);
+    }, 150);
 
 
   }
@@ -93,74 +96,98 @@ export class AppComponent implements AfterViewInit {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctxGui.clearRect(0, 0, this.ctxGui.canvas.width, this.ctxGui.canvas.height);
 
-    this.block = new Square(this.lato, 10, 1, '110,0,0', this.ctx, 200);
-    this.block2 = new Square(this.lato, 10, 2, '110,0,0', this.ctx, 300);
-    this.block3 = new Square(this.lato, 10, 4, '110,0,0', this.ctx, 400);
-    this.block4 = new Square(this.lato, 10, 6, '110,0,0', this.ctx, 500);
-    this.block5 = new Square(this.lato, 10, 8, '110,0,0', this.ctx, 600);
-    //switch (this.getRandomInt(3)) {
-    //case 0: this.block.moveUp(); break;
-    //case 1: this.block.moveLeft(); break;
-    //case 2: this.block.moveDown(); break;
-    // case 3: this.block.moveRight();; break;
-    // }
+    this.enemies = [
+      new Square(this.lato, 10, 1, '110,0,0', this.ctx, 200),
+      new Square(this.lato, 10, 2, '0,110,0', this.ctx, 300),
+      new Square(this.lato, 10, 5, '0,0,110', this.ctx, 400),
+      new Square(this.lato, 10, 6, '110,70,0', this.ctx, 500),
+      new Square(this.lato, 10, 9, '110,0,70', this.ctx, 600),
+      new Square(this.lato, 10, 10, '70,70,110', this.ctx, 700),
+      new Square(this.lato, 10, 13, '110,0,0', this.ctx, 800),
+      new Square(this.lato, 10, 14, '110,0,0', this.ctx, 900),
+      new Square(this.lato, 1, 3, '110,0,0', this.ctx, 200),
+      new Square(this.lato, 2, 3, '0,110,0', this.ctx, 300),
+      new Square(this.lato, 5, 3, '0,0,110', this.ctx, 400),
+      new Square(this.lato, 6, 3, '110,70,0', this.ctx, 500),
+      new Square(this.lato, 9, 3, '110,0,70', this.ctx, 600),
+      new Square(this.lato, 10, 3, '70,70,110', this.ctx, 700),
+      new Square(this.lato, 13, 3, '110,0,0', this.ctx, 800),
+      new Square(this.lato, 14, 3, '110,0,0', this.ctx, 900)
+    ];
+   
+
     this.userGui = new UserGui(this.ctxGui, this.coord, this.collisionsNumber);
     this.userGui.draw();
-    this.block.setColor('100,10,160');
-    this.block2.setColor('200,100,120');
-    this.block3.setColor('100,200,120');
-    this.block4.setColor('150,250,20');
-    this.block.standUp();
-    this.block2.standUp();
-    this.block3.standUp();
-    this.block4.standUp();
-    this.block5.standUp();
+    this.standUpEnemies();
+
     this.squares.forEach((square: Square) => {
       this.coord = { x: square.getX(), y: square.getY() };
-
       square.setColor('0,0,0');
+      let col: Collision = this.collisionsArrayControl(square);
 
       switch (this.key) {
         case 'w':
-          if (!this.collision(square, this.block) && !this.collision(square, this.block2) && !this.collision(square, this.block3) && !this.collision(square, this.block4) && !this.collision(square, this.block5)) {
-            if (square.getY() > 0) { square.moveUp(); } else { if (square.getY() == 0) { square.setY(14) } else { square.standUp() } }
+          if (col.esito) {
+            if (square.getY() > 0) {
+              square.moveUp();
+            }
+            else {
+              if (square.getY() == 0) {
+                square.setY(14)
+              } else {
+                square.standUp()
+              }
+            }
           } else {
             this.collisionsNumber++;
-            this.manage('UP', square);
+            this.manage('UP', square,col.indice);
 
-            //square.standUp()
-            //this.squares.pop();
           }
           break;
         case 'a':
-          if (!this.collision(square, this.block) && !this.collision(square, this.block2) && !this.collision(square, this.block3) && !this.collision(square, this.block4) && !this.collision(square, this.block5)) {
-            if (square.getX() > 0) { square.moveLeft(); } else { if (square.getX() == 0) { square.setX(14) } else { square.standUp() } };
+          if (col.esito) {
+            if (square.getX() > 0) {
+              square.moveLeft();
+            } else {
+              if (square.getX() == 0) {
+                square.setX(14)
+              } else { square.standUp() }
+            };
           } else {
-            //square.standUp()
             this.collisionsNumber++;
-            this.manage('LEFT', square);
-
-            //this.squares.pop();
+            this.manage('LEFT', square,col.indice);
           }
           break;
         case 's':
-          if (!this.collision(square, this.block) && !this.collision(square, this.block2) && !this.collision(square, this.block3) && !this.collision(square, this.block4) && !this.collision(square, this.block5)) {
-            if (square.getY() < 14) { square.moveDown() } else { if (square.getY() == 14) { square.setY(0) } else { square.standUp() } }
+          if (col.esito) {
+            if (square.getY() < 15) {
+              square.moveDown()
+            } else {
+              if (square.getY() == 15) {
+                square.setY(0)
+              } else {
+                square.standUp()
+              }
+            }
           } else {
             this.collisionsNumber++;
-            this.manage('DOWN', square);
-            // square.standUp()
-
+            this.manage('DOWN', square,col.indice);
           }
           break;
         case 'd':
-          if (!this.collision(square, this.block) && !this.collision(square, this.block2) && !this.collision(square, this.block3) && !this.collision(square, this.block4) && !this.collision(square, this.block5)) {
-            if (square.getX() < 14) { square.moveRight(); } else { if (square.getX() == 14) { square.setX(0) } else { square.standUp() } };
+          if (col.esito) {
+            if (square.getX() < 14) {
+              square.moveRight();
+            } else {
+              if (square.getX() == 14) {
+                square.setX(0)
+              } else {
+                square.standUp()
+              }
+            };
           } else {
             this.collisionsNumber++;
-            this.manage('RIGHT', square);
-
-            //square.standUp()
+            this.manage('RIGHT', square,col.indice);
           }
           break;
         default: square.standUp();
@@ -172,24 +199,24 @@ export class AppComponent implements AfterViewInit {
     this.requestId = requestAnimationFrame(() => { this.tick });
 
   }
-  private manage(direction: String, sq: Square) {
-    let tune = 0;
-    if (this.collision(sq, this.block)) {
-      tune = this.block.getTune();
+  private standUpEnemies(): void {
+
+    for (let i = 0; i < this.enemies.length; i++) {
+      this.enemies[i].standUp();
     }
-    if (this.collision(sq, this.block2)) {
-      tune = this.block2.getTune();
+  }
+  private collisionsArrayControl(square: Square): Collision {
+    let i = 0;
+    for (let e of this.enemies) {
+      if (this.collision(square, e)) {
+        return { esito: false, indice: i }
+      }
+      i++;
     }
-    if (this.collision(sq, this.block3)) {
-      tune = this.block3.getTune();
-    }
-    if (this.collision(sq, this.block4)) {
-      tune = this.block4.getTune();
-    }
-    if (this.collision(sq, this.block5)) {
-      tune = this.block5.getTune();
-    }
-    this.mySound.playOscillator(tune);
+    return { esito: true, indice: i }
+  }
+  private manage(direction: String, sq: Square, index: number) {
+    this.mySound.playOscillator(this.enemies[index].getTune());
     switch (direction) {
       case 'UP': sq.moveUp(); break;
       case 'DOWN': sq.moveDown(); break;
