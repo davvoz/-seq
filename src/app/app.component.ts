@@ -42,7 +42,7 @@ export class AppComponent implements AfterViewInit {
   count = 0;
   matrix = [[]];
   fre = [];
-  squares: Cursor[] = [];
+  squares: Square[] = [];
   arrBeats = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
   frequencies = [110.00, 116.54, 123.47, 130.81, 138.59, 146.83, 155.56, 164.81, 174.61, 185.00, 196.00, 207.65];
   w; h; cellwidth; cellheight;
@@ -100,25 +100,15 @@ export class AppComponent implements AfterViewInit {
     this.enemies = [
 
     ];
-    if (this.persistenceColor.counter > 5) {
-      this.persistenceColor.color = '100,100,200';
-      this.persistenceColor.counter--;
-    } else if(this.persistenceColor.counter > 0){
-     this.persistenceColor.color = '50,100,200';
-      this.persistenceColor.counter--;
-    }else{
-      
-      this.persistenceColor.counter = 10;
-    }
-    let rand = this.getRandomInt(255, 50);
+
     this.enemies = [
       new Square(this.lato, 10, 0, '100,0,0', this.ctx, 58.27),
       new Square(this.lato, 10, 3, '100,0,0', this.ctx, 61.74),
       new Square(this.lato, 10, 5, '100,0,0', this.ctx, 65.41),
       new Square(this.lato, 10, 7, '100,0,0', this.ctx, 69.30),
-      new Square(this.lato, 10, 9, '100,0,0', this.ctx, rand),
-      new Square(this.lato, 10, 11, this.persistenceColor.color, this.ctx, 77.78),
-      new Square(this.lato, 10, 13, this.persistenceColor.color, this.ctx, 82.41),
+      new Square(this.lato, 10, 9, '100,0,0', this.ctx, 34),
+      new Square(this.lato, 10, 11, '100,0,0', this.ctx, 77.78),
+      new Square(this.lato, 10, 13, '100,0,0', this.ctx, 82.41),
       new Square(this.lato, 10, 15, '100,0,0', this.ctx, 87.31),
       new Square(this.lato, 10, 16, '100,0,0', this.ctx, 311.13),
       new Square(this.lato, 4, 1, '100,0,0', this.ctx, 58.27),
@@ -191,7 +181,7 @@ export class AppComponent implements AfterViewInit {
       this.coord = { x: square.getX(), y: square.getY() };
       square.setColor('0,0,0');
       const col: Collision = this.collisionsArrayControl(square);
-     
+
       switch (this.key) {
         case 'w':
           if (col.esito) {
@@ -275,9 +265,21 @@ export class AppComponent implements AfterViewInit {
     }
   }
   private collisionsArrayControl(square: Square): Collision {
+    if (this.persistenceColor.counter > 5) {
+      this.persistenceColor.color = '100,100,200';
+      this.persistenceColor.counter--;
+    } else if (this.persistenceColor.counter > 0) {
+      this.persistenceColor.color = '50,100,200';
+      this.persistenceColor.counter--;
+    } else {
+
+      this.persistenceColor.counter = 10;
+    }
+    let rand = this.getRandomInt(255, 50);
     let count;
     for (let i = 0; i < this.enemies.length; i++) {
       if (this.collision(square, this.enemies[i])) {
+        square.setColor(this.persistenceColor.color);
         return { esito: false, indice: i }
       }
       count = i;
@@ -300,7 +302,7 @@ export class AppComponent implements AfterViewInit {
     this.block = new Square(this.lato, this.getRandomInt(15, 0), this.getRandomInt(15, 0), '110,0,0', this.ctx, 100);
     this.block2 = new Square(this.lato, this.getRandomInt(15, 0), this.getRandomInt(15, 0), '110,0,0', this.ctx, 200);
     //this.squares.pop();
-    const square = new Cursor(this.lato, 0, 0, '100,100,20', this.ctx, 100);
+    const square = new Square(this.lato, 0, 0, '100,100,20', this.ctx, 100);
     this.squares = this.squares.concat(square);
 
   }
