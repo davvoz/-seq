@@ -58,3 +58,5 @@ export interface Collision{
   esito:boolean;
   indice:number;
 }
+
+export type Orientation = 'VERTICALE|ORIZZONTALE';

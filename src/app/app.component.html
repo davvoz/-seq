@@ -7,8 +7,9 @@
 
 
 </div>
-{{persistenceColor.counter}}
 <button (click)="start()">start</button><br>
-
+<select [(ngModel)]="selectedValue">
+  <option *ngFor="let c of physicMode" [ngValue]="c">{{c.name}}</option>
+</select>
 
 

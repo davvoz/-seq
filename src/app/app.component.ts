@@ -59,12 +59,14 @@ export class AppComponent implements AfterViewInit {
   block5: Square = new Square(20, 6, 6, this.randomColorString(), this.ctx, 100);
   persistenceColor = { counter: 10, color: '0,0,0' };
   enemies: Square[] = [this.block, this.block2, this.block3, this.block4, this.block5];
-
+  selectedValue = { name: 'collidi', cod: 0 };
   collisionsNumber = 0;
   l1 = this.getRandomInt(16, 0);
   l2 = this.getRandomInt(16, 0);
   l3 = this.getRandomInt(16, 0);
   l4 = this.getRandomInt(16, 0);
+  physicMode = [{ name: 'collidi', cod: 0 }, { name: 'rimbalza', cod: 1 }, { name: 'spettro', cod: 2 }];
+  borderCollider = false;
 
   constructor(public myTimer: TimerService, public mySound: SoundService, private ngZone: NgZone) {
     this.coord.x = 0;
@@ -84,11 +86,20 @@ export class AppComponent implements AfterViewInit {
     this.ctxGui = this.canvasGui.nativeElement.getContext("2d");
     this.ctx = this.canvas.nativeElement.getContext("2d");
 
+    this.enemies = [
+      
+    ];
+    for (let i = 0; i < 16; i++) {
+    this.enemies.push(new Square(this.lato,i, 0, '100,0,0', this.ctx, 58.27 +i ));
+       
+    }
+
+
     this.ngZone.runOutsideAngular(() => this.tick());
     setInterval(() => {
 
       this.tick();
-    }, 200);
+    }, 100);
 
 
   }
@@ -97,80 +108,6 @@ export class AppComponent implements AfterViewInit {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctxGui.clearRect(0, 0, this.ctxGui.canvas.width, this.ctxGui.canvas.height);
 
-    this.enemies = [
-
-    ];
-
-    this.enemies = [
-      new Square(this.lato, 10, 0, '100,0,0', this.ctx, 58.27),
-      new Square(this.lato, 10, 3, '100,0,0', this.ctx, 61.74),
-      new Square(this.lato, 10, 5, '100,0,0', this.ctx, 65.41),
-      new Square(this.lato, 10, 7, '100,0,0', this.ctx, 69.30),
-      new Square(this.lato, 10, 9, '100,0,0', this.ctx, 34),
-      new Square(this.lato, 10, 11, '100,0,0', this.ctx, 77.78),
-      new Square(this.lato, 10, 13, '100,0,0', this.ctx, 82.41),
-      new Square(this.lato, 10, 15, '100,0,0', this.ctx, 87.31),
-      new Square(this.lato, 10, 16, '100,0,0', this.ctx, 311.13),
-      new Square(this.lato, 4, 1, '100,0,0', this.ctx, 58.27),
-      new Square(this.lato, 4, 3, '100,0,0', this.ctx, 61.74),
-      new Square(this.lato, 4, 4, '100,0,0', this.ctx, 155.56),
-      new Square(this.lato, 4, 7, '100,0,0', this.ctx, 69.30),
-      new Square(this.lato, 4, 9, '100,0,0', this.ctx, this.getRandomInt(3000, 50)),
-      new Square(this.lato, 4, 11, '100,0,0', this.ctx, 155.56),
-      new Square(this.lato, 4, 13, '100,0,0', this.ctx, 523.25),
-      new Square(this.lato, 4, 14, '100,0,0', this.ctx, 185.00),
-      new Square(this.lato, 2, 16, '100,0,0', this.ctx, 174.61),
-      new Square(this.lato, 2, 9, '100,0,0', this.ctx, 73.42),
-      new Square(this.lato, 2, 11, '100,0,0', this.ctx, 77.78),
-      new Square(this.lato, 2, 13, '100,0,0', this.ctx, 82.41),
-      new Square(this.lato, 2, 14, '100,0,0', this.ctx, 233.08),
-      new Square(this.lato, 2, 15, '100,0,0', this.ctx, 92.50),
-      new Square(this.lato, 2, 1, '100,0,0', this.ctx, 311.13),
-      new Square(this.lato, 2, 3, '100,0,0', this.ctx, 116.54),
-      new Square(this.lato, 2, 4, '100,0,0', this.ctx, 155.56),
-      new Square(this.lato, 2, 7, '100,0,0', this.ctx, 69.30),
-      new Square(this.lato, 2, 9, '100,0,0', this.ctx, 73.42),
-      new Square(this.lato, 14, 9, '100,0,0', this.ctx, 73.42),
-      new Square(this.lato, 13, 11, '100,0,0', this.ctx, 523.25),
-      new Square(this.lato, 14, 13, '100,0,0', this.ctx, 116.54),
-      new Square(this.lato, 13, 14, '100,0,0', this.ctx, 87.31),
-      new Square(this.lato, 14, 15, '100,0,0', this.ctx, 92.50),
-      new Square(this.lato, 15, 1, '100,0,0', this.ctx, 58.27),
-      new Square(this.lato, 15, 3, '100,0,0', this.ctx, 415.30),
-      new Square(this.lato, 15, 4, '100,0,0', this.ctx, 155.56),
-      new Square(this.lato, 15, 7, '100,0,0', this.ctx, 69.30),
-      new Square(this.lato, 15, 8, '100,0,0', this.ctx, 233.08),
-      new Square(this.lato, 10, 14, '100,0,0', this.ctx, 92.50),
-      new Square(this.lato, 7, 1, '100,0,0', this.ctx, 311.13),
-      new Square(this.lato, 7, 3, '100,0,0', this.ctx, 61.74),
-      new Square(this.lato, 7, 5, '100,0,0', this.ctx, 155.56),
-      new Square(this.lato, 7, 7, '100,0,0', this.ctx, 116.54),
-      new Square(this.lato, 7, 9, '100,0,0', this.ctx, 73.42),
-      new Square(this.lato, 7, 11, '100,0,0', this.ctx, 155.56),
-      new Square(this.lato, 7, 12, '100,0,0', this.ctx, 523.25),
-      new Square(this.lato, 7, 14, '100,0,0', this.ctx, 415.30),
-      new Square(this.lato, 7, 16, '100,0,0', this.ctx, 174.61),
-      new Square(this.lato, 7, 9, '100,0,0', this.ctx, 73.42),
-      new Square(this.lato, 9, 1, '100,0,0', this.ctx, 415.30),
-      new Square(this.lato, 9, 3, '100,0,0', this.ctx, 233.08),
-      new Square(this.lato, 9, 4, '100,0,0', this.ctx, 155.56),
-      new Square(this.lato, 9, 5, '100,0,0', this.ctx, 69.30),
-      new Square(this.lato, 9, 7, '100,0,0', this.ctx, 116.54),
-      new Square(this.lato, 9, 9, '100,0,0', this.ctx, 155.56),
-      new Square(this.lato, 9, 10, '100,0,0', this.ctx, 311.13),
-      new Square(this.lato, 9, 11, '100,0,0', this.ctx, 185.00),
-      new Square(this.lato, 9, 13, '100,0,0', this.ctx, 174.61),
-      new Square(this.lato, 9, 14, '100,0,0', this.ctx, 73.42),
-      new Square(this.lato, 1, 2, '100,0,0', this.ctx, 58.27),
-      new Square(this.lato, 1, 3, '100,0,0', this.ctx, 2415.30),
-      new Square(this.lato, 1, 5, '100,0,0', this.ctx, 155.56),
-      new Square(this.lato, 1, 7, '100,0,0', this.ctx, 69.30),
-      new Square(this.lato, 1, 8, '100,0,0', this.ctx, 73.42),
-      new Square(this.lato, 1, 10, '100,0,0', this.ctx, 311.13),
-      new Square(this.lato, 1, 11, '100,0,0', this.ctx, 415.30),
-      new Square(this.lato, 1, 12, '100,0,0', this.ctx, 174.61),
-      new Square(this.lato, 1, 14, '100,0,0', this.ctx, 116.54),
-    ];
 
 
     this.userGui = new UserGui(0, 0, this.ctxGui, this.coord, this.collisionsNumber, '0,0,0');
@@ -230,7 +167,11 @@ export class AppComponent implements AfterViewInit {
           } else {
             this.manage('DOWN', square, col.indice);
             this.collisionsNumber++;
-
+            if (square.getY() == 15) {
+              square.setY(0)
+            } else {
+              square.standUp()
+            }
           }
           break;
         case 'd':
@@ -245,8 +186,14 @@ export class AppComponent implements AfterViewInit {
               }
             };
           } else {
-            this.collisionsNumber++;
             this.manage('RIGHT', square, col.indice);
+            this.collisionsNumber++;
+            if (square.getX() == 15) {
+              square.setX(0)
+            } else {
+              square.standUp()
+            }
+
           }
           break;
         default: square.standUp();
@@ -258,6 +205,16 @@ export class AppComponent implements AfterViewInit {
     this.requestId = requestAnimationFrame(() => { this.tick });
 
   }
+
+  makeid(length) {
+    var result = '';
+    var characters = 'asdw';
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
   private standUpEnemies(): void {
 
     for (let i = 0; i < this.enemies.length; i++) {
@@ -265,21 +222,11 @@ export class AppComponent implements AfterViewInit {
     }
   }
   private collisionsArrayControl(square: Square): Collision {
-    if (this.persistenceColor.counter > 5) {
-      this.persistenceColor.color = '100,100,200';
-      this.persistenceColor.counter--;
-    } else if (this.persistenceColor.counter > 0) {
-      this.persistenceColor.color = '50,100,200';
-      this.persistenceColor.counter--;
-    } else {
 
-      this.persistenceColor.counter = 10;
-    }
-    let rand = this.getRandomInt(255, 50);
     let count;
     for (let i = 0; i < this.enemies.length; i++) {
       if (this.collision(square, this.enemies[i])) {
-        square.setColor(this.persistenceColor.color);
+        square.setColor('255,100,120');
         return { esito: false, indice: i }
       }
       count = i;
