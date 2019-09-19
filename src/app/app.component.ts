@@ -57,7 +57,7 @@ export class AppComponent implements AfterViewInit {
   block3: Square = new Square(20, 6, 6, this.randomColorString(), this.ctx, 100);
   block4: Square = new Square(20, 6, 6, this.randomColorString(), this.ctx, 100);
   block5: Square = new Square(20, 6, 6, this.randomColorString(), this.ctx, 100);
-
+  persistenceColor = { counter: 10, color: '0,0,0' };
   enemies: Square[] = [this.block, this.block2, this.block3, this.block4, this.block5];
 
   collisionsNumber = 0;
@@ -100,22 +100,32 @@ export class AppComponent implements AfterViewInit {
     this.enemies = [
 
     ];
-    let rand = this.getRandomInt(255,50);
+    if (this.persistenceColor.counter > 5) {
+      this.persistenceColor.color = '100,100,200';
+      this.persistenceColor.counter--;
+    } else if(this.persistenceColor.counter > 0){
+     this.persistenceColor.color = '50,100,200';
+      this.persistenceColor.counter--;
+    }else{
+      
+      this.persistenceColor.counter = 10;
+    }
+    let rand = this.getRandomInt(255, 50);
     this.enemies = [
       new Square(this.lato, 10, 0, '100,0,0', this.ctx, 58.27),
       new Square(this.lato, 10, 3, '100,0,0', this.ctx, 61.74),
       new Square(this.lato, 10, 5, '100,0,0', this.ctx, 65.41),
       new Square(this.lato, 10, 7, '100,0,0', this.ctx, 69.30),
-      new Square(this.lato, 10, 9, rand+',100,'+rand, this.ctx,rand ),
-      new Square(this.lato, 10, 11, '100,0,0', this.ctx, 77.78),
-      new Square(this.lato, 10, 13, '100,0,0', this.ctx, 82.41),
+      new Square(this.lato, 10, 9, '100,0,0', this.ctx, rand),
+      new Square(this.lato, 10, 11, this.persistenceColor.color, this.ctx, 77.78),
+      new Square(this.lato, 10, 13, this.persistenceColor.color, this.ctx, 82.41),
       new Square(this.lato, 10, 15, '100,0,0', this.ctx, 87.31),
       new Square(this.lato, 10, 16, '100,0,0', this.ctx, 311.13),
       new Square(this.lato, 4, 1, '100,0,0', this.ctx, 58.27),
       new Square(this.lato, 4, 3, '100,0,0', this.ctx, 61.74),
       new Square(this.lato, 4, 4, '100,0,0', this.ctx, 155.56),
       new Square(this.lato, 4, 7, '100,0,0', this.ctx, 69.30),
-      new Square(this.lato, 4, 9, this.randomColorString(), this.ctx, this.getRandomInt(3000,50)),
+      new Square(this.lato, 4, 9, '100,0,0', this.ctx, this.getRandomInt(3000, 50)),
       new Square(this.lato, 4, 11, '100,0,0', this.ctx, 155.56),
       new Square(this.lato, 4, 13, '100,0,0', this.ctx, 523.25),
       new Square(this.lato, 4, 14, '100,0,0', this.ctx, 185.00),
@@ -181,7 +191,7 @@ export class AppComponent implements AfterViewInit {
       this.coord = { x: square.getX(), y: square.getY() };
       square.setColor('0,0,0');
       const col: Collision = this.collisionsArrayControl(square);
-      console.log(col.indice);
+     
       switch (this.key) {
         case 'w':
           if (col.esito) {
