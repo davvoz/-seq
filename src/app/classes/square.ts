@@ -22,10 +22,7 @@ export class Square extends Shape {
     return this.tune
   }
   draw() {
-    this.ctx.strokeStyle = 'red';
-    this.ctx.fillStyle = 'rgb(' + this.getColor() + ')';
-    this.ctx.fillRect(this.getDimensioneLato() * this.getX(), this.getDimensioneLato() * this.getY(),
-      this.getDimensioneLato(), this.getDimensioneLato());
+    
       
 
 
@@ -33,13 +30,13 @@ export class Square extends Shape {
     // draw font in red
 
 
-    //this.ctx.beginPath();
-    //this.ctx.arc(this.getDimensioneLato() *this.getX(),this.getDimensioneLato() * this.getY(), this.getDimensioneLato() /2, 0, 2 * Math.PI, false);
-    //this.ctx.fillStyle = this.getColor();
-    //this.ctx.fill();
-    //this.ctx.lineWidth = 1;
-    //this.ctx.strokeStyle = 'red';
-    //this.ctx.stroke();
+    this.ctx.beginPath();
+   this.ctx.arc(this.getDimensioneLato() *this.getX(),this.getDimensioneLato() * this.getY(), this.getDimensioneLato() /2, 0, 2 * Math.PI, false);
+  this.ctx.fillStyle = this.getColor();
+    this.ctx.fill();
+    this.ctx.lineWidth = 1;
+    this.ctx.strokeStyle = 'red';
+    this.ctx.stroke();
 
   }
 }

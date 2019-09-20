@@ -90,7 +90,7 @@ export class AppComponent implements AfterViewInit {
     this.enemies = [];
 
     for (let i = 0; i < 16; i++) {
-      //this.enemies.push(new Square(this.lato, i, 0, '100,0,0', this.ctx, 58.27 + i));
+    this.enemies.push(new Square(this.lato, i + 1, 1, this.randomColorString(), this.ctx, this.getRandomInt(500,50)));
 
     }
 
@@ -108,15 +108,15 @@ export class AppComponent implements AfterViewInit {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctxGui.clearRect(0, 0, this.ctxGui.canvas.width, this.ctxGui.canvas.height);
 
+    
 
-
-    this.userGui = new UserGui(0, 0, this.ctxGui, this.coord, this.collisionsNumber, '0,0,0');
+    this.userGui = new UserGui(0, 0, this.ctxGui, this.coord, this.collisionsNumber,  this.randomColorString());
     this.userGui.draw();
     this.standUpEnemies();
 
-    this.squares.forEach((square: Cursor) => {
+    this.squares.forEach((square: LineOfSquares) => {
       this.coord = { x: square.getX(), y: square.getY() };
-      square.setColor('0,0,0');
+      square.setColor('100,0,0');
       const col: Collision = this.collisionsArrayControl(square);
 
       switch (this.key) {
@@ -226,7 +226,7 @@ export class AppComponent implements AfterViewInit {
     let count;
     for (let i = 0; i < this.enemies.length; i++) {
       if (this.collision(square, this.enemies[i])) {
-        square.setColor('255,100,120');
+        square.setColor( this.randomColorString());
         return { esito: false, indice: i }
       }
       count = i;
@@ -234,7 +234,7 @@ export class AppComponent implements AfterViewInit {
     return { esito: true, indice: count }
   }
   private manage(direction: String, sq: Square, index: number) {
-    this.mySound.playOscillator(this.enemies[index].getTune());
+    this.mySound.playOscillator(this.enemies[index].getTune()+this.getRandomInt(100,0));
     switch (direction) {
       case 'UP': sq.moveUp(); break;
       case 'DOWN': sq.moveDown(); break;
@@ -250,7 +250,11 @@ export class AppComponent implements AfterViewInit {
     this.block2 = new Square(this.lato, this.getRandomInt(15, 0), this.getRandomInt(15, 0), '110,0,0', this.ctx, 200);
     //this.squares.pop();
     const square = new Square(this.lato, 0, 0, '100,100,20', this.ctx, 100);
-    this.squares = this.squares.concat(square);
+
+
+    this.squares = this.squares.concat(new LineOfSquares(20, 1, 1, this.randomColorString(), this.ctx, 100, 15, 'VERTICALE'));
+    this.squares[0].standUp();
+
 
   }
   public stop() {
@@ -272,7 +276,7 @@ export class AppComponent implements AfterViewInit {
   }
   play(): void {
     const squareModel = new Square(10, 0, 0, this.randomColorString(), this.ctx, 0);;
-    this.squares = this.squares.concat(squareModel);
+    this.squares = this.squares.concat((new LineOfSquares(20, 10, 10, this.randomColorString(), this.ctx, 100, 50, 'VERTICALE')));
   }
   handleChange(event) {
 

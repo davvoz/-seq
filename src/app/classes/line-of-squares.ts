@@ -12,25 +12,28 @@ export class LineOfSquares extends Square {
     this.lato = lato;
     this.orientamento = orientamento
     this.squares = [];
-    this.costruisciLinea();
   }
-  public drawLine(): void {
-    for (let i = 0; i < this.lunghezza; i++) {
-this.ctx.fillRect(this.getDimensioneLato() * this.getX(), this.getDimensioneLato() * this.getY(),
-      this.getDimensioneLato(), this.getDimensioneLato());
-    }
-  }
-  private costruisciLinea(): void {
-    for (let i = 0; i < this.lunghezza; i++) {
-     
-      if (this.orientamento == 'VERTICALE') {
-         console.log(this.squares);
-        this.squares.push(new Square(this.lato, this.getX(), this.getY() +2, this.getColor(), this.ctx, 0))
+  draw() {
+     for (let i = 0; i < this.lunghezza; i++) {
+    this.ctx.strokeStyle = 'red';
+    this.ctx.fillStyle = 'rgb(' + this.getColor() + ')';
+    this.ctx.fillRect(this.getDimensioneLato() * this.getX(), this.getDimensioneLato() * this.getY() + this.getDimensioneLato() *i,
+      2, this.getDimensioneLato());
+     }
 
-      } else {
 
-      }
-    }
-    this.drawLine()
+    //clear background
+    // draw font in red
+
+
+    //this.ctx.beginPath();
+    //this.ctx.arc(this.getDimensioneLato() *this.getX(),this.getDimensioneLato() * this.getY(), this.getDimensioneLato() /2, 0, 2 * Math.PI, false);
+    //this.ctx.fillStyle = this.getColor();
+    //this.ctx.fill();
+    //this.ctx.lineWidth = 1;
+    //this.ctx.strokeStyle = 'red';
+    //this.ctx.stroke();
+
   }
+  
 }
