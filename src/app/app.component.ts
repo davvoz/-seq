@@ -6,6 +6,7 @@ import { RadioBtn, Adsr } from './interfaces/interfaces';
 import { Square } from './classes/square';
 import { UserGui } from './classes/user-gui';
 import { Cursor } from './classes/cursor';
+import { LineOfSquares } from './classes/line-of-squares';
 import { Coordinates, Collision } from './interfaces/interfaces';
 @Component({
   selector: 'my-app',
@@ -67,7 +68,7 @@ export class AppComponent implements AfterViewInit {
   l4 = this.getRandomInt(16, 0);
   physicMode = [{ name: 'collidi', cod: 0 }, { name: 'rimbalza', cod: 1 }, { name: 'spettro', cod: 2 }];
   borderCollider = false;
-
+  myLine: LineOfSquares;
   constructor(public myTimer: TimerService, public mySound: SoundService, private ngZone: NgZone) {
     this.coord.x = 0;
     this.coord.y = 0;
@@ -85,13 +86,12 @@ export class AppComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.ctxGui = this.canvasGui.nativeElement.getContext("2d");
     this.ctx = this.canvas.nativeElement.getContext("2d");
-
-    this.enemies = [
-      
-    ];
+this.myLine = new LineOfSquares(20, 0, 0, this.randomColorString(), this.ctx, 100,5,'VERTICALE');
+    this.enemies = [];
+    
     for (let i = 0; i < 16; i++) {
-    this.enemies.push(new Square(this.lato,i, 0, '100,0,0', this.ctx, 58.27 +i ));
-       
+      //this.enemies.push(new Square(this.lato, i, 0, '100,0,0', this.ctx, 58.27 + i));
+
     }
 
 
