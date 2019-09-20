@@ -86,9 +86,9 @@ export class AppComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.ctxGui = this.canvasGui.nativeElement.getContext("2d");
     this.ctx = this.canvas.nativeElement.getContext("2d");
-this.myLine = new LineOfSquares(20, 0, 0, this.randomColorString(), this.ctx, 100,5,'VERTICALE');
+    this.myLine = new LineOfSquares(20, 10, 10, this.randomColorString(), this.ctx, 100, 5, 'VERTICALE');
     this.enemies = [];
-    
+
     for (let i = 0; i < 16; i++) {
       //this.enemies.push(new Square(this.lato, i, 0, '100,0,0', this.ctx, 58.27 + i));
 

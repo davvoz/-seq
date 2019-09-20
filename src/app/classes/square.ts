@@ -26,14 +26,13 @@ export class Square extends Shape {
     this.ctx.fillStyle = 'rgb(' + this.getColor() + ')';
     this.ctx.fillRect(this.getDimensioneLato() * this.getX(), this.getDimensioneLato() * this.getY(),
       this.getDimensioneLato(), this.getDimensioneLato());
-this.ctx.font = "7px IMPACT";
-
-    this.ctx.fillText(this.getDimensioneLato() * this.getX(),this.getDimensioneLato() *  this.getX(),this.getDimensioneLato() * this.getY()+10);
-
-      //clear background
-      // draw font in red
       
-    
+
+
+    //clear background
+    // draw font in red
+
+
     //this.ctx.beginPath();
     //this.ctx.arc(this.getDimensioneLato() *this.getX(),this.getDimensioneLato() * this.getY(), this.getDimensioneLato() /2, 0, 2 * Math.PI, false);
     //this.ctx.fillStyle = this.getColor();

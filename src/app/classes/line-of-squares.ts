@@ -12,18 +12,25 @@ export class LineOfSquares extends Square {
     this.lato = lato;
     this.orientamento = orientamento
     this.squares = [];
+    this.costruisciLinea();
   }
   public drawLine(): void {
-
+    for (let i = 0; i < this.lunghezza; i++) {
+this.ctx.fillRect(this.getDimensioneLato() * this.getX(), this.getDimensioneLato() * this.getY(),
+      this.getDimensioneLato(), this.getDimensioneLato());
+    }
   }
   private costruisciLinea(): void {
     for (let i = 0; i < this.lunghezza; i++) {
+     
       if (this.orientamento == 'VERTICALE') {
-        this.squares.push(new Square(this.lato, this.getX(), this.getY() + i, this.getColor(), this.ctx, 0))
-        this.squares[i].standUp();
+         console.log(this.squares);
+        this.squares.push(new Square(this.lato, this.getX(), this.getY() +2, this.getColor(), this.ctx, 0))
+
       } else {
 
       }
     }
+    this.drawLine()
   }
 }
