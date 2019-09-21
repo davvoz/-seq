@@ -21,7 +21,6 @@ export class AppComponent implements AfterViewInit {
   public key;
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    console.log(event.key);
     this.key = event.key;
   }
 
@@ -65,15 +64,7 @@ export class AppComponent implements AfterViewInit {
     this.coord.x = 0;
     this.coord.y = 0;
 
-    this.subscription = this.myTimer.trackStateItem$
-      .subscribe(res => {
 
-
-        if (this.isPlayed) {
-
-        }
-
-      });
   }
   ngAfterViewInit() {
     this.ctxGui = this.canvasGui.nativeElement.getContext("2d");
@@ -81,27 +72,31 @@ export class AppComponent implements AfterViewInit {
     this.myLine = new LineOfSquares(this.lato, -1, 0, '0,0,0', this.ctx, 100, 12, 'VERTICALE');
     this.myLine.standUp();
     this.standUpEnemies();
-//    this.drawGrid();
+    this.drawGrid();
+    this.subscription = this.myTimer.trackStateItem$
+      .subscribe(res => {
+        console.log('tuic');
+        console.log(this.isPlayed);
+        if (this.isPlayed) {
+          this.tick();
+        }
+      });
 
-    this.ngZone.runOutsideAngular(() => this.tick());
-    setInterval(() => {
-      if (this.isPlayed) { this.tick(); }
-    }, 100);
 
   }
   tick() {
 
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-    this.ctxGui.clearRect(0, 0, this.ctxGui.canvas.width, this.ctxGui.canvas.height);
+    // this.ctxGui.clearRect(0, 0, this.ctxGui.canvas.width, this.ctxGui.canvas.height);
     this.userGui = new UserGui(0, 0, this.ctxGui, this.coord, this.collisionsNumber, this.randomColorString());
 
-    this.drawGrid();
+
     this.userGui.draw();
     this.standUpEnemies();
     this.coord = { x: this.myLine.getX(), y: 0 };
     this.myLine.setColor('100,0,0');
     const col: Collision = this.collisionsArrayControl(this.myLine);
-    console.log(col);
+
     if (this.myLine.getX() == 14) {
       this.myLine.setX(-1);
       if (!col.esito) {
@@ -134,8 +129,7 @@ export class AppComponent implements AfterViewInit {
     for (let i = 0; i < this.enemies.length; i++) {
       if (this.collision(square, this.enemies[i])) {
         square.setColor(this.randomColorString());
-        console.log('COLLISION!!!');
-        console.log(i);
+
         return { esito: false, indice: i }
       }
       count = i;
@@ -154,6 +148,7 @@ export class AppComponent implements AfterViewInit {
 
   public start() {
     this.isPlayed = true;
+    this.myTimer.play();
     this.myLine = new LineOfSquares(20, 0, 0, '0,0,0', this.ctx, 100, 12, 'VERTICALE');
   }
   public stop() {
@@ -173,14 +168,18 @@ export class AppComponent implements AfterViewInit {
     }
   }
   public drawGrid() {
-
-
     var x = 0;
     var y = 0;
-    var w = this.ctx.canvas.width;
-    var h = this.ctx.canvas.height;
+    var w = this.ctxGui.canvas.width;
+    var h = this.ctxGui.canvas.height;
 
-
+    for (let i = 0; i < w; i++) {
+      for (let j = 0; j < h; j++) {
+        this.ctxGui.beginPath();
+        this.ctxGui.rect(i * this.lato - this.lato, j * this.lato - this.lato, i * this.lato, j * this.lato);
+        this.ctxGui.stroke();
+      }
+    }
   }
 
   public getMousePos(evt) {
@@ -198,9 +197,7 @@ export class AppComponent implements AfterViewInit {
   }
   collision(player: Square, enemy: Square) {
     var distX = Math.abs(player.getX() - enemy.getX() - enemy.getDimensioneLato());
-    //var distY = Math.abs(player.getY() - enemy.getY() - enemy.getDimensioneLato());
     var dx = distX - enemy.getDimensioneLato();
-    //  var dy = distY - enemy.getDimensioneLato();
     return (dx == 0);
   }
   handleChange(evt) {

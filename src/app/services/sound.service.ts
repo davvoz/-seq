@@ -47,7 +47,7 @@ export class SoundService implements Adsr {
     gainNode.gain.linearRampToValueAtTime(this.sustainVal, ct + this.attack + this.decay + this.sustain);
     gainNode.gain.linearRampToValueAtTime(0, ct + this.attack + this.decay + this.sustain + this.relase);
     oscillator.stop(ct + this.attack + this.decay + this.sustain + this.relase);
-console.log('Im oscillator , im played '+freq+'Hz')
+
   }
 
 }

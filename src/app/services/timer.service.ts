@@ -66,6 +66,7 @@ export class TimerService {
       this.nextNote();
     }
     this.timer = setTimeout(this.scheduleNote.bind(this), 0);
+    
     // this.timeoutId = requestAnimationFrame(this.scheduleNote);
   }
   private nextNote() {

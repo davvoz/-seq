@@ -24,13 +24,7 @@ export class UserGui extends Shape {
     this.collisions = value;
   }
   draw() {
-    this.ctx.font = "15px IMPACT";
-    this.ctx.fillText('X = ' + this.getText().x, 230, 320);
-    this.ctx.font = "15px IMPACT";
-    this.ctx.fillText('Y = ' + this.getText().y, 290, 320);
-
-    this.ctx.font = "15px IMPACT";
-    this.ctx.fillText('Collision N° = ' + this.getCollision(), 0, 320);
+ 
 
 
   }
