@@ -21,8 +21,8 @@ export class SoundService implements Adsr {
     //this.sustainVal = parseFloat(this.sustainVal + '');
     //this.relase = parseFloat(this.relase + '');
     this.attack = 0;
-    this.decay =0.1;
-    this.sustain =0.0;
+    this.decay = 0.1;
+    this.sustain = 0.0;
     this.sustainVal = 0.01;
     this.relase = 0.1;
 
@@ -34,9 +34,9 @@ export class SoundService implements Adsr {
     gainNode.gain.value = this.gain;
 
 
-    oscillator.frequency.setValueAtTime(freq - 100, ct); // value in hertz
+    oscillator.frequency.setValueAtTime(freq, ct); // value in hertz
     oscillator.connect(gainNode);
-    oscillator.type = 'square';
+    oscillator.type = 'sawtooth';
     gainNode.connect(this.ts.audioContext.destination);
     oscillator.start();
 
@@ -47,7 +47,7 @@ export class SoundService implements Adsr {
     gainNode.gain.linearRampToValueAtTime(this.sustainVal, ct + this.attack + this.decay + this.sustain);
     gainNode.gain.linearRampToValueAtTime(0, ct + this.attack + this.decay + this.sustain + this.relase);
     oscillator.stop(ct + this.attack + this.decay + this.sustain + this.relase);
-
+   console.log('OSC:Im playning ' + freq + 'Hz')
   }
 
 }

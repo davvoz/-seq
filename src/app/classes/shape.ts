@@ -1,14 +1,18 @@
-import {  Drowable } from '../interfaces/interfaces';
-export  class Shape implements Drowable {
+import { Drowable } from '../interfaces/interfaces';
+export class Shape implements Drowable {
   private posX: number;
   private posY: number;
   private color: String;
-  constructor(x: number, y: number, color: String,  ctx: CanvasRenderingContext2D) {
+  private _isStanding: boolean;
+  constructor(x: number, y: number, color: String) {
     this.posX = x;
     this.posY = y;
     this.color = color;
+    this._isStanding = false;
   }
-
+  public isStanding() {
+    return this._isStanding;
+  }
   public getX(): number {
     return this.posX
   }
@@ -48,6 +52,7 @@ export  class Shape implements Drowable {
     this.posY = this.getY();
     this.draw();
   }
+
   draw() { }
- 
+
 }

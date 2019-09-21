@@ -23,10 +23,6 @@ export class AppComponent implements AfterViewInit {
   handleKeyboardEvent(event: KeyboardEvent) {
     this.key = event.key;
   }
-
-  precedent: Square;
-
-  radioButtons: Array<RadioBtn> = [];
   isPlayed = false;
   subscription: Subscription;
   frequency = 0;
@@ -42,7 +38,6 @@ export class AppComponent implements AfterViewInit {
   count = 0;
   matrix = [[]];
   fre = [];
-
   arrBeats = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
   frequencies = [110.00, 116.54, 123.47, 130.81, 138.59, 146.83, 155.56, 164.81, 174.61, 185.00, 196.00, 207.65];
   w; h; cellwidth; cellheight;
@@ -63,7 +58,7 @@ export class AppComponent implements AfterViewInit {
   constructor(public myTimer: TimerService, public mySound: SoundService, private ngZone: NgZone) {
     this.coord.x = 0;
     this.coord.y = 0;
-
+    this.myTimer.speed = 180;
 
   }
   ngAfterViewInit() {
@@ -71,12 +66,11 @@ export class AppComponent implements AfterViewInit {
     this.ctx = this.canvas.nativeElement.getContext("2d");
     this.myLine = new LineOfSquares(this.lato, -1, 0, '0,0,0', this.ctx, 100, 12, 'VERTICALE');
     this.myLine.standUp();
+    this.populateEnemiesArray();
     this.standUpEnemies();
-    this.drawGrid();
+    this.drawPianoGrid();
     this.subscription = this.myTimer.trackStateItem$
       .subscribe(res => {
-        console.log('tuic');
-        console.log(this.isPlayed);
         if (this.isPlayed) {
           this.tick();
         }
@@ -85,36 +79,32 @@ export class AppComponent implements AfterViewInit {
 
   }
   tick() {
-
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-    // this.ctxGui.clearRect(0, 0, this.ctxGui.canvas.width, this.ctxGui.canvas.height);
     this.userGui = new UserGui(0, 0, this.ctxGui, this.coord, this.collisionsNumber, this.randomColorString());
-
-
     this.userGui.draw();
     this.standUpEnemies();
     this.coord = { x: this.myLine.getX(), y: 0 };
     this.myLine.setColor('100,0,0');
     const col: Collision = this.collisionsArrayControl(this.myLine);
-
-    if (this.myLine.getX() == 14) {
-      this.myLine.setX(-1);
+    if (this.myLine.getX() == 15) {
+      this.myLine.setX(0);
       if (!col.esito) {
         this.mySound.playOscillator(this.enemies[col.indice].getTune());
       }
-
     } else {
       this.myLine.moveRight();
-
       if (this.enemies.length > 0) {
         if (!col.esito) {
-          this.mySound.playOscillator(this.enemies[col.indice].getTune());
+          this.mySound.playOscillator(this.enemies[col.indice].getTune() + 50);
         }
       }
-
     }
+  }
 
-    this.requestId = requestAnimationFrame(() => { this.tick });
+  private populateEnemiesArray(): void {
+    for (let i = 0; i < 15; i++) {
+      this.enemies.push(new Square(this.lato, i, 1, '100,100,100', this.ctx, 100))
+    }
 
   }
 
@@ -149,7 +139,7 @@ export class AppComponent implements AfterViewInit {
   public start() {
     this.isPlayed = true;
     this.myTimer.play();
-    this.myLine = new LineOfSquares(20, 0, 0, '0,0,0', this.ctx, 100, 12, 'VERTICALE');
+    // this.myLine = new LineOfSquares(20, 0, 0, '100,100,100', this.ctx, 100, 12, 'VERTICALE');
   }
   public stop() {
     this.isPlayed = false;
@@ -165,20 +155,6 @@ export class AppComponent implements AfterViewInit {
       return '#199'
     } else {
       return '#119'
-    }
-  }
-  public drawGrid() {
-    var x = 0;
-    var y = 0;
-    var w = this.ctxGui.canvas.width;
-    var h = this.ctxGui.canvas.height;
-
-    for (let i = 0; i < w; i++) {
-      for (let j = 0; j < h; j++) {
-        this.ctxGui.beginPath();
-        this.ctxGui.rect(i * this.lato - this.lato, j * this.lato - this.lato, i * this.lato, j * this.lato);
-        this.ctxGui.stroke();
-      }
     }
   }
 
@@ -202,18 +178,39 @@ export class AppComponent implements AfterViewInit {
   }
   handleChange(evt) {
     let coo: Coordinates = this.getMousePos(evt);
-    this.enemies.push(new Square(this.lato, coo.x, coo.y - 1, '0,0,0', this.ctx, 100 * coo.y));
+    //this.enemies.push(new Square(this.lato, coo.x, coo.y - 1, '100,100,100', this.ctx, 100 * coo.y));
+    this.enemies[coo.x].standUp();
     this.standUpEnemies();
+    console.log(coo.x, coo.y);
+    // this.deleteEnemy(coo.x);
   }
-  ifEnemyExistCancellalo(index: number) {
-    for (let i = 0; i < this.enemies.length; i++) {
-      this.enemies.slice(i, 1);
+  deleteEnemy(index: number) {
+    console.log('cancello ' + index);
+    this.enemies[index].kill();
+    this.enemies.slice(index, 1);
+  }
+  drawPianoGrid() {
+    for (let y = 0; y < this.ctxGui.canvas.width; y = y + this.lato) {
+      for (let x = 0; x < this.ctxGui.canvas.width; x = x + this.lato) {
+        if (x % 8 == 0) {
+          this.ctxGui.beginPath();
+          this.ctxGui.moveTo(x, 0);
+          this.ctxGui.strokeStyle = "black";
+          this.ctxGui.lineTo(x, this.lato);
+          this.ctxGui.shadowBlur = 0;
+          this.ctxGui.stroke();
+        }
+        this.ctxGui.beginPath();
+        if (y % 8) {
+          this.ctxGui.fillStyle = "rgb(32,32,32)";
+        } else {
+          this.ctxGui.fillStyle = "rgb(40,40,40)";
+        }
+        this.ctxGui.strokeStyle = "rgb(24,24,24)";
+        this.ctxGui.rect(x, y, this.lato, this.lato);
+        this.ctxGui.fill()
+        this.ctxGui.stroke();
+      }
     }
-
-    this.enemies.forEach((enemy: Square) => {
-      if (enemy.getX()) { }
-    });
-
   }
-
 }
