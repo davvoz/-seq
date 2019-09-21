@@ -247,7 +247,11 @@ export class AppComponent implements AfterViewInit {
     for (let i = 0; i < this.enemies.length; i++) {
       this.enemies.slice(i, 1);
     }
-    this.enemies.forEach(enemy:Square)
+
+    this.enemies.forEach((enemy: Square) => {
+      if (enemy.getX()) { }
+    });
+
   }
 
 }
