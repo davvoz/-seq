@@ -9,9 +9,9 @@ import { Cursor } from '../classes/cursor';
 import { LineOfSquares } from '../classes/line-of-squares';
 import { Coordinates, Collision } from '../interfaces/interfaces';
 @Component({
-  selector: 'my-app',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  selector: 'app-piano-roll',
+  templateUrl: './piano-roll.component.html',
+  styleUrls: ['./piano-roll.component.css'],
   host: {
     '(document:keypress)': 'handleKeyboardEvent($event)'
   }
@@ -77,7 +77,7 @@ export class PianoRollComponent implements AfterViewInit {
 
     this.subscription = this.myTimer.trackStateItem$
       .subscribe(res => {
-        if (this.isPlayed) {
+        if (res.isStarted) {
           this.tick();
         }
       });

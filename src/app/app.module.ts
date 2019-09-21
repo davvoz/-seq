@@ -8,10 +8,11 @@ import { TimerService } from './services/timer.service';
 import { TimerMonitorComponent } from './timer-monitor/timer-monitor.component';
 import { SpeedControlComponent } from './speed-control/speed-control.component';
 import { PianoRollComponent } from './piano-roll/piano-roll.component';
+import { StartStopComponent } from './start-stop/start-stop.component';
 
 @NgModule({
   imports:      [ BrowserModule, FormsModule ],
-  declarations: [ AppComponent, TimerMonitorComponent, SpeedControlComponent, PianoRollComponent ],
+  declarations: [ AppComponent, TimerMonitorComponent, SpeedControlComponent, PianoRollComponent, StartStopComponent ],
   bootstrap:    [ AppComponent ],
   providers: [SoundService, TimerService]
 })

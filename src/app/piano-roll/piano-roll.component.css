@@ -29,8 +29,8 @@ border:2px solid red;
 }
  .stage {
    left: 13%;
-    width: 480px;
-    height: 400px;
+    width: 320px;
+    height: 240px;
     position: relative;
     border: 2px solid black;
     align-items: center;
