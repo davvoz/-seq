@@ -81,9 +81,7 @@ export class AppComponent implements AfterViewInit {
     this.myLine = new LineOfSquares(this.lato, -1, 0, '0,0,0', this.ctx, 100, 12, 'VERTICALE');
     this.myLine.standUp();
     this.standUpEnemies();
-    this.drawGrid();
-
-    this.drawGrid();
+//    this.drawGrid();
 
     this.ngZone.runOutsideAngular(() => this.tick());
     setInterval(() => {
@@ -97,15 +95,16 @@ export class AppComponent implements AfterViewInit {
     this.ctxGui.clearRect(0, 0, this.ctxGui.canvas.width, this.ctxGui.canvas.height);
     this.userGui = new UserGui(0, 0, this.ctxGui, this.coord, this.collisionsNumber, this.randomColorString());
 
-
+    this.drawGrid();
     this.userGui.draw();
     this.standUpEnemies();
     this.coord = { x: this.myLine.getX(), y: 0 };
     this.myLine.setColor('100,0,0');
     const col: Collision = this.collisionsArrayControl(this.myLine);
-    if (this.myLine.getX() == 15) {
+    console.log(col);
+    if (this.myLine.getX() == 14) {
       this.myLine.setX(-1);
-      if (col.esito) {
+      if (!col.esito) {
         this.mySound.playOscillator(this.enemies[col.indice].getTune());
       }
 
@@ -113,7 +112,7 @@ export class AppComponent implements AfterViewInit {
       this.myLine.moveRight();
 
       if (this.enemies.length > 0) {
-        if (col.esito) {
+        if (!col.esito) {
           this.mySound.playOscillator(this.enemies[col.indice].getTune());
         }
       }
@@ -131,7 +130,7 @@ export class AppComponent implements AfterViewInit {
   }
   private collisionsArrayControl(square: Square): Collision {
 
-    let count;
+    let count = 0;
     for (let i = 0; i < this.enemies.length; i++) {
       if (this.collision(square, this.enemies[i])) {
         square.setColor(this.randomColorString());
@@ -175,46 +174,12 @@ export class AppComponent implements AfterViewInit {
   }
   public drawGrid() {
 
-    // 横线与竖线的是距
-    var dx = this.lato;
-    var dy = this.lato;
 
-    // 初始坐标原点
     var x = 0;
     var y = 0;
     var w = this.ctx.canvas.width;
     var h = this.ctx.canvas.height;
 
-    // 单个步长所表示的长度
-
-    var xy = 10;
-
-    this.ctx.lineWidth = 1;
-
-    // 画横线
-    while (y < h) {
-      y = y + dy;
-      this.ctx.moveTo(x, y);
-      this.ctx.lineTo(w, y);
-      this.ctx.stroke();
-
-      //横坐标的数字  
-      this.ctx.font = "1px Calibri";
-      xy += this.lato;
-    }
-
-    // 画竖线
-    y = 0;
-    xy = 10;
-    while (x < w) {
-      x = x + dx;
-      this.ctx.moveTo(x, y);
-      this.ctx.lineTo(x, h);
-      this.ctx.stroke();
-      //纵坐标的数字  
-
-      xy += this.lato;
-    }
 
   }
 

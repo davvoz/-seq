@@ -20,20 +20,6 @@ export class LineOfSquares extends Square {
       this.ctx.fillRect(this.getDimensioneLato() * this.getX(), this.getDimensioneLato() * this.getY() + this.getDimensioneLato() * i,
         3, this.getDimensioneLato());
     }
-
-
-    //clear background
-    // draw font in red
-
-
-    //this.ctx.beginPath();
-    //this.ctx.arc(this.getDimensioneLato() *this.getX(),this.getDimensioneLato() * this.getY(), this.getDimensioneLato() /2, 0, 2 * Math.PI, false);
-    //this.ctx.fillStyle = this.getColor();
-    //this.ctx.fill();
-    //this.ctx.lineWidth = 1;
-    //this.ctx.strokeStyle = 'red';
-    //this.ctx.stroke();
-
   }
 
 }
