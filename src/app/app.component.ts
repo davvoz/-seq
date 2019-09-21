@@ -68,7 +68,9 @@ export class AppComponent implements AfterViewInit {
     this.myLine.standUp();
     this.populateEnemiesArray();
     this.standUpEnemies();
-    this.drawPianoGrid();
+    this.userGui = new UserGui(0,0,this.ctxGui,{x:0,y:0},0,'0,0,0');
+    this.userGui.draw();
+    
     this.subscription = this.myTimer.trackStateItem$
       .subscribe(res => {
         if (this.isPlayed) {
@@ -80,7 +82,7 @@ export class AppComponent implements AfterViewInit {
   }
   tick() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-    this.userGui = new UserGui(0, 0, this.ctxGui, this.coord, this.collisionsNumber, this.randomColorString());
+    
     this.userGui.draw();
     this.standUpEnemies();
     this.coord = { x: this.myLine.getX(), y: 0 };
@@ -179,38 +181,9 @@ export class AppComponent implements AfterViewInit {
   handleChange(evt) {
     let coo: Coordinates = this.getMousePos(evt);
     //this.enemies.push(new Square(this.lato, coo.x, coo.y - 1, '100,100,100', this.ctx, 100 * coo.y));
-    this.enemies[coo.x].standUp();
-    this.standUpEnemies();
+    this.enemies[coo.x].isStanding() ? this.enemies[coo.x].kill():this.enemies[coo.x].standUp();
     console.log(coo.x, coo.y);
-    // this.deleteEnemy(coo.x);
   }
-  deleteEnemy(index: number) {
-    console.log('cancello ' + index);
-    this.enemies[index].kill();
-    this.enemies.slice(index, 1);
-  }
-  drawPianoGrid() {
-    for (let y = 0; y < this.ctxGui.canvas.width; y = y + this.lato) {
-      for (let x = 0; x < this.ctxGui.canvas.width; x = x + this.lato) {
-        if (x % 8 == 0) {
-          this.ctxGui.beginPath();
-          this.ctxGui.moveTo(x, 0);
-          this.ctxGui.strokeStyle = "black";
-          this.ctxGui.lineTo(x, this.lato);
-          this.ctxGui.shadowBlur = 0;
-          this.ctxGui.stroke();
-        }
-        this.ctxGui.beginPath();
-        if (y % 8) {
-          this.ctxGui.fillStyle = "rgb(32,32,32)";
-        } else {
-          this.ctxGui.fillStyle = "rgb(40,40,40)";
-        }
-        this.ctxGui.strokeStyle = "rgb(24,24,24)";
-        this.ctxGui.rect(x, y, this.lato, this.lato);
-        this.ctxGui.fill()
-        this.ctxGui.stroke();
-      }
-    }
-  }
+
+ 
 }
