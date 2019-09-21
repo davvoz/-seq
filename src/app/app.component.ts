@@ -17,7 +17,7 @@ import { Coordinates, Collision } from './interfaces/interfaces';
   }
 })
 export class AppComponent implements AfterViewInit {
-
+  freq = [110.00, 116.54, 123.47, 130.81, 138.59, 146.83, 155.56, 164.81, 174.61, 185.00, 196.00, 207.65];
   key;
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -86,7 +86,7 @@ export class AppComponent implements AfterViewInit {
       this.myLine.setX(0);
       if (!col.esito) {
         if (this.enemies[col.indice].isStanding()) {
-          this.mySound.playOscillator(this.enemies[col.indice].getTune() );
+          this.mySound.playOscillator(this.enemies[col.indice].getTune());
         }
       }
     } else {
@@ -103,16 +103,16 @@ export class AppComponent implements AfterViewInit {
 
   private populateEnemiesArray(): void {
     for (let i = 0; i < 16; i++) {
-      this.enemies.push(new Square(this.lato, i, this.getRandomInt(12, 0), '100,100,100', this.ctx, 100));
+      this.enemies.push(new Square(this.lato, i, 0, '100,100,100', this.ctx, 0));
     }
-    for (let i = 0; i < this.enemies.length; i++) {
-      this.enemies[i].kill();
-    }
+
   }
 
   private standUpEnemies(): void {
     for (let i = 0; i < this.enemies.length; i++) {
       this.enemies[i].standUp();
+      this.enemies[i].kill();
+
     }
   }
 
@@ -171,7 +171,9 @@ export class AppComponent implements AfterViewInit {
   }
   handleChange(evt) {
     let coo: Coordinates = this.getMousePos(evt);
-    this.enemies[coo.x].isStanding() ? this.enemies[coo.x].kill() : (this.enemies[coo.x].setTune(coo.y - 1),this.enemies[coo.x].setY(coo.y - 1), this.enemies[coo.x].standUp());
+    console.log(coo);
+    console.log(this.freq[coo.y]);
+    this.enemies[coo.x].isStanding() ? this.enemies[coo.x].kill() : (this.enemies[coo.x].setTune(this.freq[coo.y]), this.enemies[coo.x].setY(coo.y - 1), this.enemies[coo.x].standUp());
   }
 
 
