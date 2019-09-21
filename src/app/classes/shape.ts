@@ -48,11 +48,19 @@ export class Shape implements Drowable {
     this.draw();
   }
   standUp() {
+    this._isStanding = true;
     this.posX = this.getX();
     this.posY = this.getY();
     this.draw();
   }
+  kill() {
+    this._isStanding = false;
+    this.erase();
+  }
+  draw() {//override questo}
+  }
+  private erase() {//override questo }
+  }
 
-  draw() { }
 
 }

@@ -18,11 +18,13 @@ import { Coordinates, Collision } from './interfaces/interfaces';
 })
 export class AppComponent implements AfterViewInit {
 
-  public key;
+  key;
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     this.key = event.key;
   }
+
+
   isPlayed = false;
   subscription: Subscription;
   frequency = 0;
@@ -30,84 +32,82 @@ export class AppComponent implements AfterViewInit {
   gain = 0;
   width = 300;
   lato = 20;
-  public attack = 0;
-  public decay = 0;
-  public sustain = 0;
-  public relase = 0;
-  public sustainVal = 0;
-  count = 0;
-  matrix = [[]];
-  fre = [];
-  arrBeats = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-  frequencies = [110.00, 116.54, 123.47, 130.81, 138.59, 146.83, 155.56, 164.81, 174.61, 185.00, 196.00, 207.65];
-  w; h; cellwidth; cellheight;
+  attack = 0;
+  decay = 0;
+  sustain = 0;
+  relase = 0;
+  sustainVal = 0;
+
   coord: Coordinates = { x: 0, y: 0 };
   @ViewChild('canvas', { static: false }) canvas: ElementRef<HTMLCanvasElement>;
   @ViewChild('canvasGui', { static: false }) canvasGui: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvasLine', { static: false }) canvasLine: ElementRef<HTMLCanvasElement>;
+
   private ctxGui: CanvasRenderingContext2D;
   private ctx: CanvasRenderingContext2D;
+  private ctxLine: CanvasRenderingContext2D;
   userGui: UserGui;
-
-  persistenceColor = { counter: 10, color: '0,0,0' };
   enemies: Square[] = [];
-  selectedValue = { name: 'collidi', cod: 0 };
-  collisionsNumber = 0;
-
-  borderCollider = false;
   myLine: LineOfSquares;
+
   constructor(public myTimer: TimerService, public mySound: SoundService, private ngZone: NgZone) {
     this.coord.x = 0;
     this.coord.y = 0;
     this.myTimer.speed = 180;
-
   }
   ngAfterViewInit() {
     this.ctxGui = this.canvasGui.nativeElement.getContext("2d");
     this.ctx = this.canvas.nativeElement.getContext("2d");
-    this.myLine = new LineOfSquares(this.lato, -1, 0, '0,0,0', this.ctx, 100, 12, 'VERTICALE');
+    this.ctxLine = this.canvasLine.nativeElement.getContext("2d");
+
+    this.myLine = new LineOfSquares(this.lato, -1, 0, '0,0,0', this.ctxLine, 100, 12, 'VERTICALE');
     this.myLine.standUp();
+
     this.populateEnemiesArray();
     this.standUpEnemies();
-    this.userGui = new UserGui(0,0,this.ctxGui,{x:0,y:0},0,'0,0,0');
+
+    this.userGui = new UserGui(0, 0, this.ctxGui, { x: 0, y: 0 }, 0, '0,0,0', this.lato);
     this.userGui.draw();
-    
+
     this.subscription = this.myTimer.trackStateItem$
       .subscribe(res => {
         if (this.isPlayed) {
           this.tick();
         }
       });
-
-
   }
+
   tick() {
-    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-    
-    this.userGui.draw();
-    this.standUpEnemies();
+    this.ctxLine.clearRect(0, 0, this.ctxLine.canvas.width, this.ctxLine.canvas.height);
     this.coord = { x: this.myLine.getX(), y: 0 };
     this.myLine.setColor('100,0,0');
     const col: Collision = this.collisionsArrayControl(this.myLine);
     if (this.myLine.getX() == 15) {
       this.myLine.setX(0);
       if (!col.esito) {
-        this.mySound.playOscillator(this.enemies[col.indice].getTune());
+        if (this.enemies[col.indice].isStanding()) {
+          this.mySound.playOscillator(this.enemies[col.indice].getTune() );
+        }
       }
     } else {
       this.myLine.moveRight();
       if (this.enemies.length > 0) {
         if (!col.esito) {
-          this.mySound.playOscillator(this.enemies[col.indice].getTune() + 50);
+          if (this.enemies[col.indice].isStanding()) {
+            this.mySound.playOscillator(this.enemies[col.indice].getTune());
+          }
         }
       }
     }
   }
 
   private populateEnemiesArray(): void {
-    for (let i = 0; i < 15; i++) {
-      this.enemies.push(new Square(this.lato, i, 1, '100,100,100', this.ctx, 100))
+    for (let i = 0; i < 16; i++) {
+      this.enemies.push(new Square(this.lato, i, this.getRandomInt(12, 0), '100,100,100', this.ctx, 100));
     }
-
+    for (let i = 0; i < this.enemies.length; i++) {
+      this.enemies[i].kill();
+    }
   }
 
   private standUpEnemies(): void {
@@ -115,38 +115,29 @@ export class AppComponent implements AfterViewInit {
       this.enemies[i].standUp();
     }
   }
-  private collisionsArrayControl(square: Square): Collision {
 
+  private collisionsArrayControl(square: Square): Collision {
     let count = 0;
     for (let i = 0; i < this.enemies.length; i++) {
       if (this.collision(square, this.enemies[i])) {
         square.setColor(this.randomColorString());
-
         return { esito: false, indice: i }
       }
       count = i;
     }
     return { esito: true, indice: count }
   }
-  private manage(direction: String, sq: Square, index: number) {
-    this.mySound.playOscillator(this.enemies[index].getTune() + this.getRandomInt(100, 0));
-    switch (direction) {
-      case 'UP': sq.moveUp(); break;
-      case 'DOWN': sq.moveDown(); break;
-      case 'LEFT': sq.moveLeft(); break;
-      case 'RIGHT': sq.moveRight(); break;
-    }
-  }
 
   public start() {
     this.isPlayed = true;
     this.myTimer.play();
-    // this.myLine = new LineOfSquares(20, 0, 0, '100,100,100', this.ctx, 100, 12, 'VERTICALE');
   }
+
   public stop() {
     this.isPlayed = false;
     this.myTimer.stop()
   }
+
   public pause() {
     this.isPlayed = false;
     this.myTimer.pause()
@@ -160,7 +151,7 @@ export class AppComponent implements AfterViewInit {
     }
   }
 
-  public getMousePos(evt) {
+  private getMousePos(evt) {
     let rect = this.canvas.nativeElement.getBoundingClientRect();
     return {
       x: Math.floor((evt.clientX - rect.left) / this.lato),
@@ -173,17 +164,15 @@ export class AppComponent implements AfterViewInit {
   private getRandomInt(maxValue: number, minValue: number) {
     return Math.floor(Math.random() * (maxValue - 0)) + minValue; //Il max è escluso e il min è incluso
   }
-  collision(player: Square, enemy: Square) {
+  private collision(player: Square, enemy: Square) {
     var distX = Math.abs(player.getX() - enemy.getX() - enemy.getDimensioneLato());
     var dx = distX - enemy.getDimensioneLato();
     return (dx == 0);
   }
   handleChange(evt) {
     let coo: Coordinates = this.getMousePos(evt);
-    //this.enemies.push(new Square(this.lato, coo.x, coo.y - 1, '100,100,100', this.ctx, 100 * coo.y));
-    this.enemies[coo.x].isStanding() ? this.enemies[coo.x].kill():this.enemies[coo.x].standUp();
-    console.log(coo.x, coo.y);
+    this.enemies[coo.x].isStanding() ? this.enemies[coo.x].kill() : (this.enemies[coo.x].setTune(coo.y - 1),this.enemies[coo.x].setY(coo.y - 1), this.enemies[coo.x].standUp());
   }
 
- 
+
 }

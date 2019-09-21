@@ -53,6 +53,7 @@ export interface Coordinates{
 
 export interface Drowable{
    draw():void;
+   erase():void;
 }
 export interface Collision{
   esito:boolean;
@@ -60,3 +61,4 @@ export interface Collision{
 }
 
 export type Orientation = 'VERTICALE|ORIZZONTALE';
+export type Freq = [110.00, 116.54, 123.47, 130.81, 138.59, 146.83, 155.56, 164.81, 174.61, 185.00, 196.00, 207.65];
