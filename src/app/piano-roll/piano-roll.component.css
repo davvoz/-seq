@@ -29,14 +29,25 @@ border:2px solid red;
 }
  .stage {
    left: 13%;
-    width: 320px;
+    width: 490px;
     height: 240px;
     position: relative;
     border: 2px solid black;
     align-items: center;
     align-content: center;
   }
-
+.controlli{
+  top:3%;
+  left:68%;
+  position: absolute;
+  background: grey;
+  width: 150px;
+  font-family: monospace;
+}
+input{
+  transform: rotateX(180deg);
+  width: 80%;
+}
   canvas { position: absolute; }
   .ui-layer { z-index: 3;}
   .game-layer { z-index: 2;}

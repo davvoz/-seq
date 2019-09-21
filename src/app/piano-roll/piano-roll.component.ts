@@ -52,14 +52,18 @@ export class PianoRollComponent implements AfterViewInit {
   private ctxGui: CanvasRenderingContext2D;
   private ctx: CanvasRenderingContext2D;
   private ctxLine: CanvasRenderingContext2D;
+
   userGui: UserGui;
   enemies: Square[] = [];
   myLine: LineOfSquares;
+  waveSelected = 'square';
+  waveforms = ['square','sine','sawtooth'];
 
   constructor(public myTimer: TimerService, public mySound: SoundService, private ngZone: NgZone) {
     this.coord.x = 0;
     this.coord.y = 0;
     this.myTimer.speed = 180;
+
   }
   ngAfterViewInit() {
     this.ctxGui = this.canvasGui.nativeElement.getContext("2d");
@@ -86,12 +90,18 @@ export class PianoRollComponent implements AfterViewInit {
   tick() {
     this.ctxLine.clearRect(0, 0, this.ctxLine.canvas.width, this.ctxLine.canvas.height);
     this.coord = { x: this.myLine.getX(), y: 0 };
-    this.myLine.setColor('100,0,0');
+    this.myLine.setColor('200,0,0');
     const col: Collision = this.collisionsArrayControl(this.myLine);
     if (this.myLine.getX() == 15) {
       this.myLine.setX(0);
       if (!col.esito) {
         if (this.enemies[col.indice].isStanding()) {
+          this.mySound.attack = this.attack;
+          this.mySound.decay = this.decay;
+          this.mySound.sustain = this.sustain;
+          this.mySound.sustainVal = this.sustainVal;
+          this.mySound.relase = this.relase;
+          this.mySound.waveform = this.waveSelected;
           this.mySound.playOscillator(this.enemies[col.indice].getTune());
         }
       }
@@ -100,6 +110,12 @@ export class PianoRollComponent implements AfterViewInit {
       if (this.enemies.length > 0) {
         if (!col.esito) {
           if (this.enemies[col.indice].isStanding()) {
+            this.mySound.attack = this.attack;
+            this.mySound.decay = this.decay;
+            this.mySound.sustain = this.sustain;
+            this.mySound.sustainVal = this.sustainVal;
+            this.mySound.relase = this.relase;
+            this.mySound.waveform = this.waveSelected;
             this.mySound.playOscillator(this.enemies[col.indice].getTune());
           }
         }
@@ -126,7 +142,7 @@ export class PianoRollComponent implements AfterViewInit {
     let count = 0;
     for (let i = 0; i < this.enemies.length; i++) {
       if (this.collision(square, this.enemies[i])) {
-        square.setColor(this.randomColorString());
+        //square.setColor(this.randomColorString());
         return { esito: false, indice: i }
       }
       count = i;

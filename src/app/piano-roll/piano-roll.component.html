@@ -1,10 +1,20 @@
 <div class="stage">
-<canvas #canvasGui    width="321" height="241" ></canvas>
+	<canvas #canvasGui width="321" height="241"></canvas>
 
-<canvas #canvas   width="320" height="240" (click)="handleChange($event)" class="game-layer" ></canvas>
+	<canvas #canvas width="320" height="240" (click)="handleChange($event)" class="game-layer"></canvas>
 
-<canvas #canvasLine   width="320" height="240" (click)="handleChange($event)" class="game-layer" ></canvas>
+	<canvas #canvasLine width="320" height="240" (click)="handleChange($event)" class="game-layer"></canvas>
 
+	<div class="controlli">
+		A<input type="range" [(ngModel)]="attack" min="0" max="1" step="0.1"><br>
+    D<input type="range" [(ngModel)]="decay" min="0" max="1" step="0.1"><br>
+    S<input type="range" [(ngModel)]="sustain" min="0" max="1" step="0.1"><br>
+    S<input type="range" [(ngModel)]="sustainVal" min="0" max="1" step="0.1"><br>
+    R<input type="range" [(ngModel)]="relase" min="0" max="1" step="0.1">
+    <select  [(ngModel)]="waveSelected">
+        <option *ngFor="let wave of waveforms">{{ wave }}</option>
+    </select>
+</div>
 
 
 </div>
