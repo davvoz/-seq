@@ -1,15 +1,14 @@
 
 <div class="stage">
-<canvas #canvasGui    width="360" height="360" (click)="handleChange($event)"  ></canvas>
+<canvas #canvasGui    width="360" height="360" ></canvas>
 
-<canvas #canvas    width="360" height="360" (click)="handleChange($event)" class="game-layer" ></canvas>
+<canvas #canvas   width="360" height="360" (click)="handleChange($event)" class="game-layer" ></canvas>
 
 
 
 </div>
-<button (click)="start()">start</button><br>
-<select [(ngModel)]="selectedValue">
-  <option *ngFor="let c of physicMode" [ngValue]="c">{{c.name}}</option>
-</select>
+<button (click)="start()">start</button>
+<button (click)="stop()">stop</button><br>
+
 
 

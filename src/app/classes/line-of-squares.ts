@@ -14,12 +14,12 @@ export class LineOfSquares extends Square {
     this.squares = [];
   }
   draw() {
-     for (let i = 0; i < this.lunghezza; i++) {
-    this.ctx.strokeStyle = 'red';
-    this.ctx.fillStyle = 'rgb(' + this.getColor() + ')';
-    this.ctx.fillRect(this.getDimensioneLato() * this.getX(), this.getDimensioneLato() * this.getY() + this.getDimensioneLato() *i,
-      2, this.getDimensioneLato());
-     }
+    for (let i = 0; i < this.lunghezza; i++) {
+      this.ctx.strokeStyle = 'red';
+      this.ctx.fillStyle = 'rgb(' + this.getColor() + ')';
+      this.ctx.fillRect(this.getDimensioneLato() * this.getX(), this.getDimensioneLato() * this.getY() + this.getDimensioneLato() * i,
+        3, this.getDimensioneLato());
+    }
 
 
     //clear background
@@ -35,5 +35,5 @@ export class LineOfSquares extends Square {
     //this.ctx.stroke();
 
   }
-  
+
 }
