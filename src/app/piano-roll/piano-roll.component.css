@@ -1,0 +1,43 @@
+p {
+  font-family: Lato;
+}
+.a{
+  color: white;
+  font-size: 10px;
+  border: 1px solid black;
+  min-width: 40px;
+  width: 40px;
+  height: 40px;
+   display: inline-block;
+}
+.container{
+  width: 640px;
+  height: 600px;
+border:2px solid red;
+}
+.range {
+    -webkit-appearance: slider-vertical;
+    width: 20px;
+    height: 100px;
+}
+.col{
+  height: 400px;
+  width: 40px;
+  background: pink;
+  float: left;
+
+}
+ .stage {
+   left: 13%;
+    width: 480px;
+    height: 400px;
+    position: relative;
+    border: 2px solid black;
+    align-items: center;
+    align-content: center;
+  }
+
+  canvas { position: absolute; }
+  .ui-layer { z-index: 3;}
+  .game-layer { z-index: 2;}
+  .background-layer { z-index: 1; }
