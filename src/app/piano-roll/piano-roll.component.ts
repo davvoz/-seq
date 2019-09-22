@@ -29,7 +29,7 @@ export class PianoRollComponent implements AfterViewInit {
   handleKeyboardEvent(event: KeyboardEvent) {
     this.key = event.key;
   }
-
+  title = 'OSCILLATOR';
 
   isPlayed = false;
   subscription: Subscription;
