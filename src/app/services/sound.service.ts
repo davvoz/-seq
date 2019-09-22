@@ -13,39 +13,64 @@ export class SoundService implements Adsr {
   public relase = 0;
   public sustainVal = 0;
   public waveform = 'sine';
+  public muted = false;
+  public filterType = 'allpass';
+  public filterReso = 5;
+  public filterCutoff = 200;
+  public filtered = false;
   constructor(public ts: TimerService) { }
 
   public playOscillator(freq) {
+    if (!this.muted) {
+      this.inizializzaADSR();
+      //this.inizializza();
+      this.frequency = freq;
+      let ct = this.ts.audioContext.currentTime;
 
-    this.inizializzaADSR();
-    //this.inizializza();
-    this.frequency = freq;
-    // create Oscillator node
-    let oscillator = this.ts.audioContext.createOscillator();
-    let gainNode = this.ts.audioContext.createGain();
-    let ct = this.ts.audioContext.currentTime;
-    gainNode.gain.value = this.gain;
+      let oscillator = this.ts.audioContext.createOscillator();
+      let gainNode = this.ts.audioContext.createGain();
+      let biquadFilter = this.ts.audioContext.createBiquadFilter();
+      let volume = this.ts.audioContext.createGain();
+
+      gainNode.gain.setTargetAtTime(this.gain, ct, 0);
+      oscillator.frequency.setTargetAtTime(this.frequency, ct, 0);
+
+      switch (this.filterType) {
+        case 'lowpass': biquadFilter.type = 'lowpass'; break;
+        case 'highpass': biquadFilter.type = 'highpass'; break;
+        case 'bandpass': biquadFilter.type = 'bandpass'; break;
+        case 'lowshelf': biquadFilter.type = 'lowshelf'; break;
+        case 'peaking': biquadFilter.type = 'peaking'; break;
+        case 'notch': biquadFilter.type = 'notch'; break;
+        case 'allpass': biquadFilter.type = 'allpass'; break;
+      }
+
+      biquadFilter.frequency.setTargetAtTime(this.filterCutoff, ct, 0);
+      biquadFilter.gain.setTargetAtTime(this.filterReso, ct, 0);
+      oscillator.frequency.setValueAtTime(freq, ct);
+      volume.gain.setValueAtTime(this.gain, ct);
+      oscillator.connect(biquadFilter);
+      biquadFilter.connect(gainNode);
+
+      switch (this.waveform) {
+        case 'square': oscillator.type = 'square'; break;
+        case 'sine': oscillator.type = 'sine'; break;
+        case 'sawtooth': oscillator.type = 'sawtooth'; break;
+        case 'triangle': oscillator.type = 'triangle'; break;
+      }
+      gainNode.connect(volume);
+      volume.connect(this.ts.audioContext.destination);
+      oscillator.start();
 
 
-    oscillator.frequency.setValueAtTime(freq, ct); // value in hertz
-    oscillator.connect(gainNode);
-    switch (this.waveform) {
-      case 'square': oscillator.type = 'square'; break;
-      case 'sine': oscillator.type = 'sine'; break;
-      case 'sawtooth': oscillator.type = 'sawtooth'; break;
-      case 'triangle': oscillator.type = 'triangle'; break;
-     
+      gainNode.gain.setValueAtTime(0, ct);
+      gainNode.gain.linearRampToValueAtTime(1, ct + this.attack);
+      gainNode.gain.linearRampToValueAtTime(this.sustainVal, ct + this.attack + this.decay);
+      gainNode.gain.linearRampToValueAtTime(this.sustainVal, ct + this.attack + this.decay + this.sustain);
+      gainNode.gain.linearRampToValueAtTime(0, ct + this.attack + this.decay + this.sustain + this.relase);
+      oscillator.stop(ct + this.attack + this.decay + this.sustain + this.relase);
     }
-    gainNode.connect(this.ts.audioContext.destination);
-    oscillator.start();
 
-
-    gainNode.gain.setValueAtTime(0, ct);
-    gainNode.gain.linearRampToValueAtTime(1, ct + this.attack);
-    gainNode.gain.linearRampToValueAtTime(this.sustainVal, ct + this.attack + this.decay);
-    gainNode.gain.linearRampToValueAtTime(this.sustainVal, ct + this.attack + this.decay + this.sustain);
-    gainNode.gain.linearRampToValueAtTime(0, ct + this.attack + this.decay + this.sustain + this.relase);
-    oscillator.stop(ct + this.attack + this.decay + this.sustain + this.relase);
 
 
   }

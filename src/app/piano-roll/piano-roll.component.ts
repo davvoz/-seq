@@ -23,7 +23,7 @@ import { Coordinates, Collision } from '../interfaces/interfaces';
 })
 export class PianoRollComponent implements AfterViewInit {
 
-  freq = [110.00, 116.54, 123.47, 130.81, 138.59, 146.83, 155.56, 164.81, 174.61, 185.00, 196.00, 207.65,277.18,293.66,311.13,329.63,349.23,369.99,392.00,415.30,440.0,466.16,493.88,523.25];
+  freq = [110.00, 116.54, 123.47, 130.81, 138.59, 146.83, 155.56, 164.81, 174.61, 185.00, 196.00, 207.65, 277.18, 293.66, 311.13, 329.63, 349.23, 369.99, 392.00, 415.30, 440.0, 466.16, 493.88, 523.25];
   key;
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -34,7 +34,6 @@ export class PianoRollComponent implements AfterViewInit {
   isPlayed = false;
   subscription: Subscription;
   frequency = 0;
-  requestId;
   gain = 0;
   width = 300;
   lato = 20;
@@ -43,6 +42,9 @@ export class PianoRollComponent implements AfterViewInit {
   sustain = 0;
   relase = 0;
   sustainVal = 0;
+  isMuted = 0;
+  filterCutoff = 0;
+  filterReso = 0;
 
   coord: Coordinates = { x: 0, y: 0 };
   @ViewChild('canvas', { static: false }) canvas: ElementRef<HTMLCanvasElement>;
@@ -56,8 +58,10 @@ export class PianoRollComponent implements AfterViewInit {
   enemies: Square[] = [];
   myLine: LineOfSquares;
   waveSelected = 'square';
-  waveforms = ['square','sine','sawtooth','triangle'];
- 
+  filterSelected = 'lowpass';
+  waveforms = ['square', 'sine', 'sawtooth', 'triangle'];
+  filterType = ['lowpass','highpass','bandpass','lowshelf','peaking','notch','allpass']
+
   constructor(public myTimer: TimerService, public mySound: SoundService, private ngZone: NgZone) {
     this.coord.x = 0;
     this.coord.y = 0;
@@ -95,13 +99,7 @@ export class PianoRollComponent implements AfterViewInit {
       this.myLine.setX(0);
       if (!col.esito) {
         if (this.enemies[col.indice].isStanding()) {
-          this.mySound.attack = this.attack;
-          this.mySound.decay = this.decay;
-          this.mySound.sustain = this.sustain;
-          this.mySound.sustainVal = this.sustainVal;
-          this.mySound.relase = this.relase;
-          this.mySound.waveform = this.waveSelected;
-          this.mySound.playOscillator(this.enemies[col.indice].getTune());
+          this.oscConfiguration(col.indice);
         }
       }
     } else {
@@ -109,21 +107,27 @@ export class PianoRollComponent implements AfterViewInit {
       if (this.enemies.length > 0) {
         if (!col.esito) {
           if (this.enemies[col.indice].isStanding()) {
-            this.mySound.attack = this.attack;
-            this.mySound.decay = this.decay;
-            this.mySound.sustain = this.sustain;
-            this.mySound.sustainVal = this.sustainVal;
-            this.mySound.relase = this.relase;
-            this.mySound.waveform = this.waveSelected;
-            this.mySound.playOscillator(this.enemies[col.indice].getTune());
+            this.oscConfiguration(col.indice);
           }
         }
       }
     }
   }
-
+  private oscConfiguration(index: number) {
+    this.mySound.attack = this.attack;
+    this.mySound.decay = this.decay;
+    this.mySound.sustain = this.sustain;
+    this.mySound.sustainVal = this.sustainVal;
+    this.mySound.relase = this.relase;
+    this.mySound.waveform = this.waveSelected;
+    this.isMuted == 0 ? this.mySound.muted = false :this.mySound.muted = true ;
+    this.mySound.gain = this.gain;
+    this.mySound.filterCutoff = this.filterCutoff;
+    this.mySound.filterReso = this.filterReso;
+    this.mySound.playOscillator(this.enemies[index].getTune());
+  }
   private populateEnemiesArray(): void {
-    for (let i = 0; i < this.ctx.canvas.width/this.lato; i++) {
+    for (let i = 0; i < this.ctx.canvas.width / this.lato; i++) {
       this.enemies.push(new Square(this.lato, i, 0, '100,100,100', this.ctx, 0));
     }
 
@@ -192,8 +196,6 @@ export class PianoRollComponent implements AfterViewInit {
   }
   handleChange(evt) {
     let coo: Coordinates = this.getMousePos(evt);
-    console.log(coo);
-    console.log(this.enemies);
     this.enemies[coo.x].isStanding() ? this.enemies[coo.x].kill() : (this.enemies[coo.x].setTune(this.freq[coo.y]), this.enemies[coo.x].setY(coo.y - 1), this.enemies[coo.x].standUp());
   }
 

@@ -30,7 +30,7 @@ border:2px solid red;
  .stage {
    
     width: 820px;
-    height: 300px;
+    height: 350px;
     position: relative;
     border: 2px solid black;
     align-items: center;
@@ -44,10 +44,7 @@ border:2px solid red;
   width: 150px;
   font-family: monospace;
 }
-input{
-  transform: rotateX(180deg);
-  width: 80%;
-}
+
   canvas { position: absolute; }
   .ui-layer { z-index: 3;}
   .game-layer { z-index: 2;}
