@@ -115,7 +115,7 @@ ngAfterViewInit() {
     }
   }
   playStep() {
-    this.mySample.playSampler(10, 200, 0, !this.isMuted, 1, this.filterCutoff, this.filterReso, this.filterSelected, true);
+    this.mySample.playSampler(10, 200, 1, !this.isMuted, 1, this.filterCutoff, this.filterReso, this.filterSelected, true);
     console.log('samecw')
   }
 

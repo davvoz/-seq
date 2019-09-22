@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 export class SamplesLibraryService {
     public buffers = [];
     constructor(public myTimer:TimerService) {
-       this.loadSounds('./../assets/WAV/DD_Kick.wav');
+       this.loadSounds('src/assets/WAV/kick03.wav');
     }
 
     private loadSounds(path): void {
