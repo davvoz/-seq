@@ -1,17 +1,18 @@
 <table style="position:relative">
-  <tr>
-    <td><app-start-stop></app-start-stop></td>
-     <td><app-speed-control></app-speed-control></td>
+	<tr>
+		<td>
+			<app-start-stop></app-start-stop>
+		</td>
+		<td>
+			<app-speed-control></app-speed-control>
+		</td>
+		<td><button (click)="add()">+</button></td>
   </tr>
   <tr>
     <td colspan="2"><app-timer-monitor></app-timer-monitor></td>
   </tr>
 </table>
-
-<app-piano-roll></app-piano-roll>
-<app-piano-roll></app-piano-roll>
-<app-piano-roll></app-piano-roll>
+<div *ngFor="let p of pianoRolls">
 <app-piano-roll></app-piano-roll>
 
-
-
+</div>

@@ -32,8 +32,12 @@ export class SoundService implements Adsr {
       let biquadFilter = this.ts.audioContext.createBiquadFilter();
       let volume = this.ts.audioContext.createGain();
 
-      gainNode.gain.setTargetAtTime(this.gain, ct, 0);
-      oscillator.frequency.setTargetAtTime(this.frequency, ct, 0);
+      switch(this.waveform) {
+        case 'square': oscillator.type = 'square'; break;
+        case 'sine': oscillator.type = 'sine'; break;
+        case 'sawtooth': oscillator.type = 'sawtooth'; break;
+        case 'triangle': oscillator.type = 'triangle'; break;
+      }
 
       switch (this.filterType) {
         case 'lowpass': biquadFilter.type = 'lowpass'; break;
@@ -44,25 +48,19 @@ export class SoundService implements Adsr {
         case 'notch': biquadFilter.type = 'notch'; break;
         case 'allpass': biquadFilter.type = 'allpass'; break;
       }
-
-      biquadFilter.frequency.setTargetAtTime(this.filterCutoff, ct, 0);
-      biquadFilter.gain.setTargetAtTime(this.filterReso, ct, 0);
+      gainNode.gain.setValueAtTime(this.gain, ct);
+      oscillator.frequency.setValueAtTime(this.frequency, ct);
+      biquadFilter.frequency.setValueAtTime(this.filterCutoff, ct);
+      biquadFilter.gain.setValueAtTime(this.filterReso, ct);
       oscillator.frequency.setValueAtTime(freq, ct);
       volume.gain.setValueAtTime(this.gain, ct);
+      
       oscillator.connect(biquadFilter);
       biquadFilter.connect(gainNode);
-
-      switch (this.waveform) {
-        case 'square': oscillator.type = 'square'; break;
-        case 'sine': oscillator.type = 'sine'; break;
-        case 'sawtooth': oscillator.type = 'sawtooth'; break;
-        case 'triangle': oscillator.type = 'triangle'; break;
-      }
       gainNode.connect(volume);
       volume.connect(this.ts.audioContext.destination);
+      
       oscillator.start();
-
-
       gainNode.gain.setValueAtTime(0, ct);
       gainNode.gain.linearRampToValueAtTime(1, ct + this.attack);
       gainNode.gain.linearRampToValueAtTime(this.sustainVal, ct + this.attack + this.decay);
@@ -70,7 +68,6 @@ export class SoundService implements Adsr {
       gainNode.gain.linearRampToValueAtTime(0, ct + this.attack + this.decay + this.sustain + this.relase);
       oscillator.stop(ct + this.attack + this.decay + this.sustain + this.relase);
     }
-
 
 
   }

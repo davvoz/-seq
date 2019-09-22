@@ -6,6 +6,13 @@ import { Component, HostListener, ElementRef, ViewChild, AfterViewInit, NgZone }
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  
 
+  pianoRolls = [];
+
+  add() {
+    this.pianoRolls.push('pR');
+  }
+  remove() {
+
+  }
 }

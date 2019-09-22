@@ -124,6 +124,7 @@ export class PianoRollComponent implements AfterViewInit {
     this.mySound.gain = this.gain;
     this.mySound.filterCutoff = this.filterCutoff;
     this.mySound.filterReso = this.filterReso;
+    this.mySound.filterType = this.filterSelected;
     this.mySound.playOscillator(this.enemies[index].getTune());
   }
   private populateEnemiesArray(): void {
