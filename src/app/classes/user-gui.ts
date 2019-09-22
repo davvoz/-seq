@@ -23,7 +23,7 @@ export class UserGui {
     this.collisions = value;
   }
    draw() {
-    for (let y = 0; y < this.ctxGui.canvas.width; y = y + this.lato) {
+    for (let y = 0; y < this.ctxGui.canvas.height; y = y + this.lato) {
       for (let x = 0; x < this.ctxGui.canvas.width; x = x + this.lato) {
         if (x % 8 == 0) {
           this.ctxGui.beginPath();

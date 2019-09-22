@@ -33,6 +33,8 @@ export class SoundService implements Adsr {
       case 'square': oscillator.type = 'square'; break;
       case 'sine': oscillator.type = 'sine'; break;
       case 'sawtooth': oscillator.type = 'sawtooth'; break;
+      case 'triangle': oscillator.type = 'triangle'; break;
+     
     }
     gainNode.connect(this.ts.audioContext.destination);
     oscillator.start();
@@ -44,7 +46,7 @@ export class SoundService implements Adsr {
     gainNode.gain.linearRampToValueAtTime(this.sustainVal, ct + this.attack + this.decay + this.sustain);
     gainNode.gain.linearRampToValueAtTime(0, ct + this.attack + this.decay + this.sustain + this.relase);
     oscillator.stop(ct + this.attack + this.decay + this.sustain + this.relase);
-    console.log(this.attack, this.decay, this.sustain, this.sustainVal, this.relase);
+
 
   }
   private inizializza(): void {

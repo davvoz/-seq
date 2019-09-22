@@ -28,17 +28,17 @@ border:2px solid red;
 
 }
  .stage {
-   left: 13%;
-    width: 490px;
-    height: 240px;
+   
+    width: 820px;
+    height: 300px;
     position: relative;
     border: 2px solid black;
     align-items: center;
     align-content: center;
   }
 .controlli{
+  left:80%;
   top:3%;
-  left:68%;
   position: absolute;
   background: grey;
   width: 150px;
