@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SamplesLibraryService } from '../services/samples-library.service';
 import { TimerService } from '../services/timer.service';
-
+@Injectable()
 export class SamplerService {
 
   constructor(public ts: TimerService, private library: SamplesLibraryService) {
@@ -19,6 +19,7 @@ export class SamplerService {
     isFiltred: boolean,
 
   ): void {
+    console.log(volume,tune,libIndex,playing,duration,filterFrequency,filterGain,filterType,isFiltred);
     let ct =  this.ts.audioContext.currentTime;
     let gainNode = this.ts.audioContext.createGain();
     let biquadFilter = this.ts.audioContext.createBiquadFilter();
@@ -53,6 +54,7 @@ export class SamplerService {
     gainNode = null;
     biquadFilter = null;
     source = null;
+    console.log('played');
   }
 
 }
