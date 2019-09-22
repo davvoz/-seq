@@ -102,7 +102,7 @@ export class PianoRollComponent implements AfterViewInit {
       this.myLine.setX(0);
       if (!col.esito) {
         if (this.enemies[col.indice].isStanding()) {
-          this.oscConfiguration(col.indice);
+          this.playStep(col.indice);
         }
       }
     } else {
@@ -110,13 +110,13 @@ export class PianoRollComponent implements AfterViewInit {
       if (this.enemies.length > 0) {
         if (!col.esito) {
           if (this.enemies[col.indice].isStanding()) {
-            this.oscConfiguration(col.indice);
+            this.playStep(col.indice);
           }
         }
       }
     }
   }
-  private oscConfiguration(index: number) {
+  public playStep(index: number) {
     this.mySound.attack = this.attack;
     this.mySound.decay = this.decay;
     this.mySound.sustain = this.sustain;

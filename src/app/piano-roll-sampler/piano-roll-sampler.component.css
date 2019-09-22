@@ -1,0 +1,100 @@
+p {
+  font-family: Lato;
+}
+.a{
+  color: white;
+  font-size: 10px;
+  border: 1px solid black;
+  min-width: 40px;
+  width: 40px;
+  height: 40px;
+   display: inline-block;
+}
+.container{
+  width: 640px;
+  height: 600px;
+border:2px solid red;
+}
+.range {
+    -webkit-appearance: slider-vertical;
+    width: 20px;
+    height: 100px;
+}
+.col{
+  height: 400px;
+  width: 40px;
+  background: pink;
+  float: left;
+
+}
+ .stage {
+   
+    width: 1000px;
+    height: 240px;
+    position: relative;
+    border: 2px solid black;
+    align-items: center;
+    align-content: center;
+  }
+.controlli{
+  
+  position: absolute;
+  background: grey;
+  width: 359px;
+  height: 240px;
+  font-family: monospace;
+}
+
+  canvas { left:36.5%;position: absolute; }
+  .ui-layer { z-index: 3;}
+  .game-layer { z-index: 2;}
+  .background-layer { z-index: 1; }
+.syntHeader{
+  background: lightgrey;
+}
+.pallino{
+  border-radius: 7px;
+  height: 5px;
+   width: 5px;
+   display: inline-block;
+   border :1px solid black;
+}
+.adsrContainer{
+  text-align: center;
+  margin-top:1%;
+  margin-left: 1%;
+  background:darkgray;
+  border: 1px solid black;
+  width: 150px;
+  height: 150px;
+  display: inline-block;
+}
+.comboWaveContainer{
+   margin-top:1%;
+  margin-left: 1%;
+  display: inline-block;
+ background: lightgrey;
+position:absolute;
+border :1px solid black;
+width: 190px;
+}
+.filterContainer{
+   margin-top:30px;
+  margin-left: 1%;
+  display: inline-block;
+ background: darkgray;
+position:absolute;
+height: 124px;
+ width: 190px;
+ border :1px solid black;
+ text-align: left;
+}
+.gainContainer{
+  border-left: 1px solid black;
+  background: lightgrey;
+   display: inline-block;
+   text-align: right;
+   left:100px;
+position: absolute;
+width: 258px;
+}

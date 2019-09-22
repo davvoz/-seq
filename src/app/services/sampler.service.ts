@@ -1,11 +1,13 @@
-import { SampleLibraryService } from '../services/sample-library.service';
+import { Injectable } from '@angular/core';
+import { SamplesLibraryService } from '../services/samples-library.service';
+import { TimerService } from '../services/timer.service';
 
-export class MySampler {
+export class SamplerService {
 
-  constructor(private _audioContext: AudioContext, private library: SampleLibraryService) {
+  constructor(public ts: TimerService, private library: SamplesLibraryService) {
 
   }
-  play(
+  playSampler(
     volume: number,
     tune: number,
     libIndex: number,
@@ -15,15 +17,15 @@ export class MySampler {
     filterGain: number,
     filterType: string,
     isFiltred: boolean,
-    audioContextTime: number
 
   ): void {
-    let gainNode = this._audioContext.createGain();
-    let biquadFilter = this._audioContext.createBiquadFilter();
-    let source = this._audioContext.createBufferSource();
+    let ct =  this.ts.audioContext.currentTime;
+    let gainNode = this.ts.audioContext.createGain();
+    let biquadFilter = this.ts.audioContext.createBiquadFilter();
+    let source = this.ts.audioContext.createBufferSource();
     source.buffer = this.library.buffers[libIndex];
-    source.playbackRate.setTargetAtTime(tune, audioContextTime, 0);
-    gainNode.gain.setTargetAtTime(volume, audioContextTime, 0);
+    source.playbackRate.setTargetAtTime(tune, ct, 0);
+    gainNode.gain.setTargetAtTime(volume, ct, 0);
     if (playing) {
       if (isFiltred) {
         switch (filterType) {
@@ -36,17 +38,17 @@ export class MySampler {
           case 'allpass': biquadFilter.type = 'allpass'; break;
         }
         //biquadFilter.type = filterType as TBiquadFilterType;
-        biquadFilter.frequency.setTargetAtTime(filterFrequency, audioContextTime, 0);
-        biquadFilter.gain.setTargetAtTime(filterGain, audioContextTime, 0);
-        source.start(audioContextTime);
+        biquadFilter.frequency.setTargetAtTime(filterFrequency, ct, 0);
+        biquadFilter.gain.setTargetAtTime(filterGain, ct, 0);
+        source.start(ct);
         source.connect(biquadFilter);
         biquadFilter.connect(gainNode);
       } else {
-        source.start(audioContextTime);
+        source.start(ct);
         source.connect(gainNode);
       }
-      gainNode.connect(this._audioContext.destination);
-      source.stop(audioContextTime + duration);
+      gainNode.connect(this.ts.audioContext.destination);
+      source.stop(ct + duration);
     }
     gainNode = null;
     biquadFilter = null;

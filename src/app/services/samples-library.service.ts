@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 export class SamplesLibraryService {
     public buffers = [];
     constructor(private _audioContext: AudioContext) {
+      console.log('ciao');
         this.loadSounds('../../assets/WAV/DD_kick.wav');
     }
 

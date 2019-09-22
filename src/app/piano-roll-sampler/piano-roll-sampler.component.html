@@ -17,15 +17,11 @@
   </div>
 <span class="adsrContainer">
   <span style="background:lightgrey;width:150px;display: inline-block;">ADSR</span><br>
-A<input type="range" [(ngModel)]="attack" min="0" max="1" step="0.01"><br>
-    D<input type="range" [(ngModel)]="decay" min="0" max="1" step="0.01"><br>
-    S<input type="range" [(ngModel)]="sustain" min="0" max="1" step="0.01"><br>
-    S<input type="range" [(ngModel)]="sustainVal" min="0" max="1" step="0.01"><br>
-    R<input type="range" [(ngModel)]="relase" min="0" max="1" step="0.1">
+
 </span>
   <span class="comboWaveContainer">
-     waveform <select  [(ngModel)]="waveSelected"  style="left:10%;position:relative;font-family:monospace">
-        <option *ngFor="let wave of waveforms">{{ wave }}</option>
+     sample <select  [(ngModel)]="sampleSelected"  style="left:10%;position:relative;font-family:monospace">
+        <option *ngFor="let sample of samples">{{ sample }}</option>
     </select>
   </span>
   <span class="filterContainer">
