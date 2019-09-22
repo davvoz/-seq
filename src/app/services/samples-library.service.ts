@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 export class SamplesLibraryService {
     public buffers = [];
     constructor(public myTimer:TimerService) {
-       this.loadSounds('src/assets/WAV/kick03.wav');
+       this.loadSounds('../assets/WAV/kick03.wav');
     }
 
     private loadSounds(path): void {
@@ -12,7 +12,9 @@ export class SamplesLibraryService {
         request.open('GET', path, true);
         request.responseType = 'arraybuffer';
         const context = this.myTimer.audioContext;
-        request.onload = () => {
+        
+        request.onload = (arg) => {
+          console.log(request);
             context.decodeAudioData(
                 request.response,
                 buffer => {
