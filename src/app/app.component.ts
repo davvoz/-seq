@@ -1,4 +1,5 @@
 import { Component, HostListener, ElementRef, ViewChild, AfterViewInit, NgZone } from '@angular/core';
+import { TimerService } from './services/timer.service';
 
 @Component({
   selector: 'my-app',
@@ -7,12 +8,17 @@ import { Component, HostListener, ElementRef, ViewChild, AfterViewInit, NgZone }
 })
 export class AppComponent {
 
-  pianoRolls = [];
+  pianoRolls = ['pR'];
+  constructor(public myTimer: TimerService) {
 
+  }
   add() {
+    this.myTimer.addTrack();
+    this.myTimer.steps = 0;
     this.pianoRolls.push('pR');
   }
-  remove() {
-
+  remove(index) {
+    this.myTimer.removeTrack(index);
+    this.pianoRolls.splice(index,1);
   }
 }

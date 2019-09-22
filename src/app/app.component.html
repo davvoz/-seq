@@ -6,13 +6,11 @@
 		<td>
 			<app-speed-control></app-speed-control>
 		</td>
-		<td><button (click)="add()">+</button></td>
-  </tr>
-  <tr>
-    <td colspan="2"><app-timer-monitor></app-timer-monitor></td>
+    <td><app-timer-monitor></app-timer-monitor></td>
+		<td><button (click)="add()">add </button></td>
   </tr>
 </table>
-<div *ngFor="let p of pianoRolls">
+<div *ngFor="let p of pianoRolls;let i = index" style="position:relative;">
 <app-piano-roll></app-piano-roll>
 
 </div>

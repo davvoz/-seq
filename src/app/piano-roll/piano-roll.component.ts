@@ -58,9 +58,9 @@ export class PianoRollComponent implements AfterViewInit {
   enemies: Square[] = [];
   myLine: LineOfSquares;
   waveSelected = 'square';
-  filterSelected = 'lowpass';
+  filterSelected = 'allpass';
   waveforms = ['square', 'sine', 'sawtooth', 'triangle'];
-  filterType = ['lowpass','highpass','bandpass','lowshelf','peaking','notch','allpass']
+  filterType = ['lowpass', 'highpass', 'bandpass', 'lowshelf', 'peaking', 'notch', 'allpass']
 
   constructor(public myTimer: TimerService, public mySound: SoundService, private ngZone: NgZone) {
     this.coord.x = 0;
@@ -84,9 +84,12 @@ export class PianoRollComponent implements AfterViewInit {
 
     this.subscription = this.myTimer.trackStateItem$
       .subscribe(res => {
-        if (res.isStarted) {
-          this.tick();
+        if (res.traksAreOn) {
+          if (res.isStarted) {
+            this.tick();
+          }
         }
+
       });
   }
 
@@ -120,7 +123,7 @@ export class PianoRollComponent implements AfterViewInit {
     this.mySound.sustainVal = this.sustainVal;
     this.mySound.relase = this.relase;
     this.mySound.waveform = this.waveSelected;
-    this.isMuted == 0 ? this.mySound.muted = false :this.mySound.muted = true ;
+    this.isMuted == 0 ? this.mySound.muted = false : this.mySound.muted = true;
     this.mySound.gain = this.gain;
     this.mySound.filterCutoff = this.filterCutoff;
     this.mySound.filterReso = this.filterReso;
@@ -169,11 +172,11 @@ export class PianoRollComponent implements AfterViewInit {
     this.myTimer.pause()
   }
 
-  getColor(number) {
-    if (this.myTimer.steps + 1 == number) {
-      return '#199'
+  getColor() {
+    if (this.isMuted) {
+      return 'red'
     } else {
-      return '#119'
+      return 'green'
     }
   }
 

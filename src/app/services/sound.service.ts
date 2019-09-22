@@ -86,4 +86,5 @@ export class SoundService implements Adsr {
     this.relase = parseFloat(this.relase + '');
   }
 
+
 }

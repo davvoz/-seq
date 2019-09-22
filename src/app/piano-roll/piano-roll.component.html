@@ -6,23 +6,38 @@
 	<canvas #canvasLine width="640" height="240" (click)="handleChange($event)" class="game-layer"></canvas>
 
 	<div class="controlli">
-		A<input type="range" [(ngModel)]="attack" min="0" max="1" step="0.01"><br>
+		<div class="syntHeader">
+			<span class="inOutContainer" ><span class="pallino" [ngStyle]="{'background-color':getColor()}">
+</span>    on <input type="range" [(ngModel)]="isMuted" min="0" max="1" step="1" style="width:20px"/>off
+    </span>
+    <span class="gainContainer">
+     <span style="left:15px;display: inline-block;"> gain <input type="range" [(ngModel)]="gain"  min="0" max="3" step="0.01"/></span>
+    </span>
+  
+  </div>
+<span class="adsrContainer">
+  <span style="background:lightgrey;width:150px;display: inline-block;">ADSR</span><br>
+A<input type="range" [(ngModel)]="attack" min="0" max="1" step="0.01"><br>
     D<input type="range" [(ngModel)]="decay" min="0" max="1" step="0.01"><br>
     S<input type="range" [(ngModel)]="sustain" min="0" max="1" step="0.01"><br>
     S<input type="range" [(ngModel)]="sustainVal" min="0" max="1" step="0.01"><br>
     R<input type="range" [(ngModel)]="relase" min="0" max="1" step="0.1">
-   wave <select  [(ngModel)]="waveSelected"  style="left:10%;position:relative;font-family:monospace">
+</span>
+  <span class="comboWaveContainer">
+     waveform <select  [(ngModel)]="waveSelected"  style="left:10%;position:relative;font-family:monospace">
         <option *ngFor="let wave of waveforms">{{ wave }}</option>
-    </select><br>
-    <span style="left:10%;position:relative;font-family:monospace">
-on <input type="range" [(ngModel)]="isMuted" min="0" max="1" step="1" style="width:20px"/>off<br>
-gain <input type="range" [(ngModel)]="gain"  min="0" max="3" step="0.01"/>
-    wave <select  [(ngModel)]="filterSelected"  style="left:10%;position:relative;font-family:monospace">
-        <option *ngFor="let ft of filterType">{{ ft }}</option>
     </select>
+  </span>
+  <span class="filterContainer">
+    <span style="background:lightgrey;width:190px;display: inline-block;text-align:center">FILTER</span><br>
+ type <select  [(ngModel)]="filterSelected"  style="left:10%;position:relative;font-family:monospace">
+        <option *ngFor="let ft of filterType">{{ ft }}</option>
+    </select><br>
     cutoff <input type="range" [(ngModel)]="filterCutoff"  min="0" max="1000" step="1"/>
      reso  <input type="range" [(ngModel)]="filterReso"  min="0" max="100" step="1"/>
-    </span>
+  </span>
+   
+		
   
 </div>
 
